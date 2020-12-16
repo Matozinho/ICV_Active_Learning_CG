@@ -1,0 +1,13 @@
+
+.container-fluid{
+    align-items: stretch
+}
+#SRU{
+
+    min-height: 100%;
+}
+
+#eixoY{
+    float: right;
+
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CG</title>
+	<link rel="stylesheet" type="text/css" href="CG_CSS.css">
+</head>
+<body>
+	
+	<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>CG</title>
+		<link rel="stylesheet" type="text/css" href="CG_CSS.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	</head>
+	<body>
+
+		<div id="sru">
+			<span class="title">SRU</span>
+			<div class="eixo_x">
+				x &xrarr;
+			</div>
+			<br>
+			<div class="eixo_y">
+				y<br>&downarrow;
+			</div>
+			<canvas id="canU"></canvas>
+
+			<div id = "dimensoes">
+				<form>
+					<fieldset>
+						<legend>Dimensões</legend>
+						X<sub>min</sub>:<br>
+						<input oninput="reloadTabela()" type="number" id="xmin" value=0>
+						<br>
+						X<sub>max</sub>:<br>
+						<input oninput="reloadTabela()" type="number" id="xmax" value=320>
+						<br>
+						Y<sub>min</sub>:<br>
+						<input oninput="reloadTabela()" type="number" id="ymin" value=0>
+						<br>
+						Y<sub>max</sub>:<br>
+						<input oninput="reloadTabela()" type="number" id="ymax" value=280>
+						<br>
+					</fieldset>
+				</form>
+				<button class="btn btn-light" id="b1">Novo Polígono</button>
+				<p id="p1"></p>
+			</div>
+		</div>
+
+		<div id="srn">
+			<span class="title">SRN</span>
+			<div class="eixo_x">
+				x &xrarr;
+			</div>
+			<br>
+			<div class="eixo_y">
+				y<br>&downarrow;
+			</div>
+			<canvas id="canN"></canvas>
+			
+			<div id = "tabela">
+				<table id="pontos" class="table table-bordered">
+					<thead>
+						<tr>
+							<th id="th0" scope="col">
+								<div class="popup" onclick="info_box('Popup1')">&#9432;
+									<span class="popuptext" id="normalizado">Sistema Normaliazado<br>
+										X<sub>n</sub> =  ( X − X<sub>min</sub> ) /  ( X<sub>max</sub> − X<sub>min</sub> ) <br>
+										Y<sub>n</sub> = ( Y − Y<sub>min</sub> ) / ( Y<sub>max</sub> − Y<sub>min</sub> )
+									</span>
+								</div>
+							</th>
+							<th id="th1" scope="col">SRU</th>
+								<th id="th2" scope="col">SRN</th>
+								<th id="th3" scope="col">SRT</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th id = "point" scope="row">1º<br>ponto</th>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th id = "point" scope="row">2º<br>ponto</th>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th id = "point" scope="row">3º<br>ponto</th>
+							<td ></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th id = "point" scope="row">4º<br>ponto</th>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p id="p2"></p>
+				
+				<p>Correção de Razão de Aspecto</p> 
+				
+				<div>				
+					<select id="correcao">
+						<option value="sem_correcao">Sem correção</option>
+						<option value="em_x">Correção em X</option>
+						<option value="em_y">Correção em Y</option>
+					</select>
+				</div>
+
+				<div class="popup" onclick="info_box('Popup2')"> &nbsp;&nbsp; &#9432;
+					<span class="popuptext" id="semCorrecao">
+							Sem Correção<br>
+						D<sub>X</sub> = X<sub>n</sub> * ( DX<sub>max</sub> − DX<sub>min</sub> ) + DX<sub>min</sub> <br>
+						D<sub>Y</sub> = Y<sub>n</sub> * ( DY<sub>max</sub> − DY<sub>min</sub> D) + DY<sub>min</sub>  
+					</span>
+					<span class="popuptext" id="emX">
+							Correção em X<br>
+						D<sub>X</sub> = ( X<sub>n</sub> *  ( DX<sub>max</sub> − DX<sub>min</sub> ) + DX<sub>min</sub> ) * FC <br>
+						D<sub>Y</sub> = Y<sub>n</sub> * ( DY<sub>max</sub> − DY<sub>min</sub> ) + DY<sub>min</sub> ) <br><br>
+						FC = ( (X<sub>max</sub> - X<sub>min</sub>) / (Y<sub>max</sub> - Y<sub>min</sub>) ) / ( (DX<sub>max</sub> - DX<sub>min</sub>) / (DY<sub>max</sub> - DY<sub>min</sub>) )
+					</span>
+					<span class="popuptext" id="emY">
+							Correção em Y<br>
+						D<sub>X</sub> = X<sub>n</sub> * ( DX<sub>max</sub> − DX<sub>min</sub> ) + DX<sub>min</sub> ) <br>
+						D<sub>Y</sub> = Y<sub>n</sub> * ( DY<sub>max</sub> − DY<sub>min</sub> ) + DY<sub>min</sub> ) * FC <br><br>
+						FC = ( (DX<sub>max</sub> - DX<sub>min</sub>) / (DY<sub>max</sub> - DY<sub>min</sub>) ) / ( (X<sub>max</sub> - X<sub>min</sub>) / (Y<sub>max</sub> - Y<sub>min</sub>) ) 
+					</span>
+	
+				</div> 
+	
+
+			</div>
+		</div>
+
+		<div id="srt">
+			<span class="title">SRT</span>
+			<div class="eixo_x">
+				x &xrarr;
+			</div>
+			<br>
+			<div class="eixo_y">
+				y<br>&downarrow;
+			</div>
+			<div><canvas id="canT"></canvas></div>
+			<div>
+				<form id="formt1">
+					<fieldset>
+						<span class="block">
+							DX<sub>min</sub>:<br>
+							<input type="number" id="xminT" value=0>
+							<br>
+							DX<sub>max</sub>:<br>
+							<input type="number" id="xmaxT" value=450>
+						</span>
+						<span class="block">
+							DY<sub>min</sub>:<br>
+							<input type="number" id="yminT" value=0>
+							<br>
+						  	DY<sub>max</sub>:<br>
+							<input type="number" id="ymaxT" value=450>
+						</span>
+						<br>
+						<button type="button"  class="btn btn-light" id="b2">Redefinir</button>
+					</fieldset>
+				</form>
+				
+				<p id="p3"></p>
+			</div>
+		</div>
+
+		<script src="CG_JS.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+	</body>
+</html>
+</body>
+</html>

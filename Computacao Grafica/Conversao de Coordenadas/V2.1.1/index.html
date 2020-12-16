@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="style.css" rel="stylesheet"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>CG</title>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-lg-4 col-xl-4" id="SRU">
+          <h1>SRU</h1>
+          
+          <div class="row">
+            <div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 pl-4 pr-1 pt-4" id="eixoY">
+              y<br>&downarrow;
+            </div>
+            <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11  px-1">
+              x &xrarr; <br>
+              <canvas id="canU"></canvas>
+            </div>
+          </div>
+
+          <div class="row pl-3" id = "dimensoes">
+            <form class="pl-2 pt-3">
+              <fieldset>
+                <legend>Dimensões</legend>
+                X<sub>min</sub>:<br>
+                <input oninput="reloadTabela()" type="number" id="xmin" value=0>
+                <br>
+                X<sub>max</sub>:<br>
+                <input oninput="reloadTabela()" type="number" id="xmax" value=320>
+                <br>
+                Y<sub>min</sub>:<br>
+                <input oninput="reloadTabela()" type="number" id="ymin" value=0>
+                <br>
+                Y<sub>max</sub>:<br>
+                <input oninput="reloadTabela()" type="number" id="ymax" value=280>
+                <br>
+              </fieldset>
+            </form>
+          </div>
+          <div class="row pl-3 pt-3">
+            <button type="button" class="btn btn-light" id="b1">Novo Polígono</button>
+          </div>
+          <div class="row pl-3 pt-3">
+            <p id="p1"></p>
+          </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4 col-xl-4" id="SRN">
+         
+          <h1>SRN</h1>
+          <div class="row">
+            <div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 pl-4 pr-1 pt-4" id="eixoY">
+              y<br>&downarrow;
+            </div>
+            <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11  px-1">
+              x &xrarr; <br>
+              <canvas id="canN"></canvas>
+              
+            </div>
+          </div>
+
+        	<div class="row w-75" id = "tabela">
+            <table id="pontos" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th id="th0" scope="col">
+                    <button id="fon" type="button" class="btn btn-light" data-container="body" data-toggle="popover" data-placement="top" title="Sistema Normalizado" data-content="
+                      X<sub>n</sub> =  ( X − X<sub>min</sub> ) /  ( X<sub>max</sub> − X<sub>min</sub> ) <br>
+                      Y<sub>n</sub> = ( Y − Y<sub>min</sub> ) / ( Y<sub>max</sub> − Y<sub>min</sub> )">
+                      &#9432;
+                    </button>
+                  </th>
+                  <th id="th1" scope="col">SRU</th>
+                    <th id="th2" scope="col">SRN</th>
+                    <th id="th3" scope="col">SRT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th id = "point" scope="row">1º<br>ponto</th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th id = "point" scope="row">2º<br>ponto</th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th id = "point" scope="row">3º<br>ponto</th>
+                  <td ></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th id = "point" scope="row">4º<br>ponto</th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+            </table>
+            
+          </div>
+          <p>Correção de Razão de Aspecto
+            <button onclick="exibepopover()" id="popCorrec" type="button"  class="btn btn-light" data-container="body" data-toggle="popover" data-placement="top">&#9432;</button> 
+
+          </p>
+          <div class="row">
+            <div>				
+              <select id="correcao">
+                <option value="sem_correcao">Sem correção</option>
+                <option value="em_x">Correção em X</option>
+                <option value="em_y">Correção em Y</option>
+              </select>
+            </div>
+          </div>
+          <div class="row pl-3 pt-3">
+            <p id="p2"></p>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-lg-4 col-xl-4" id="SRN">
+          <h1>SRT</h1>
+          
+          <div class="row">
+            <div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 pl-4 pr-1 pt-4" id="eixoY">
+              y<br>&downarrow;
+            </div>
+            <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11  px-1">
+              x &xrarr; <br>
+              <canvas id="canT"></canvas>
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-md-6 col-lg-6 col-xl-6">
+              DX<sub>min</sub>:<br>
+              <input type="number" id="xminT" value=0> 
+              <br>
+              DY<sub>min</sub>:<br>
+							<input type="number" id="yminT" value=0>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-6">
+              DX<sub>max</sub>:<br>
+              <input type="number" id="xmaxT" value=450>
+              <br>
+              DY<sub>max</sub>:<br>
+							<input type="number" id="ymaxT" value=450>
+            </div>
+          </div>
+          <div class="row pl-3 pt-3">
+            <button type="button"  class="btn btn-  light" id="b2">Redefinir</button>
+          </div>
+          <div class="row pl-3 pt-3">
+            <p id="p3"></p>
+          </div>
+
+
+        </div>
+
+
+      </div>
+    </div>    
+   
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/7.13.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+
+    <!-- scripts para bootstrap -->
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   
+    <script src="boot.js"></script>
+  </body>
+</html>
