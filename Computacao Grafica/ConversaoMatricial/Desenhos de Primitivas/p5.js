@@ -37,10 +37,15 @@ function setup() {
     i++ //desenha as linhas no canvas
   )
     line(0, i * tamanho, Cwidth, i * tamanho);
+
+  checkbox = createCheckbox("Antialiasng", false);
+  checkbox.style("visibility", "hidden");
+  checkbox.style("display", "none");
 }
 
 function draw() {
   canvas.mousePressed(redirect);
+  checkbox.changed(defineAntialiasing);
 }
 
 //valida o numero de colunas
@@ -65,8 +70,6 @@ function redefineCol() {
     i++ //desenha as linhas no canvas
   )
     line(0, i * tamanho, Cwidth, i * tamanho);
-
-  checkbox.changed(defineAntialiasing);
 }
 
 function defineAntialiasing() {
@@ -88,11 +91,10 @@ function selectedValue(typeDraw) {
     checkbox.remove();
     checkCreated = false;
   }
-
-  redefineCol();
 }
 
 function redirect() {
+  checkbox.changed(defineAntialiasing);
   if (counter < 2 && mouseY < Cheight - lastLine) {
     //define qual o quadrado a partir das coordenadas
     Xpontos[counter] = Math.trunc(mouseX / tamanho);
@@ -175,6 +177,9 @@ function drawLine_1() {
       WritePixel(x, Math.round(y), 1);
       y += m;
     }
+
+  //reseta para o usuário poder desenhar várias formas
+  counter = -1;
 }
 
 function drawLine_2() {
@@ -324,7 +329,7 @@ function drawLine_2() {
           y -= 1;
           x += 1;
         }
-        if (makeAntialiasing) {
+        if (makeAntialiasing && dx < dy) {
           distance = two_v_dx * invDenom;
           WritePixel(x, y, 1 - Math.abs(distance)); //pixel principal
           distance = two_dx_invDenom + two_v_dx * invDenom;
@@ -335,6 +340,8 @@ function drawLine_2() {
       }
     }
   }
+  //reseta para o usuário poder desenhar várias formas
+  counter = -1;
 }
 
 function drawCircle() {
@@ -381,7 +388,15 @@ function drawCircle() {
   let y = radius;
   let d = 1 - radius;
 
-  resetaCanvas(); //tira os pontos escolhidos pelo usuário
+  //tira os pontos escolhidos pelo usuário
+  erase();
+  rect(Xpontos[0] * tamanho, Ypontos[0] * tamanho, tamanho);
+  rect(Xpontos[1] * tamanho, Ypontos[1] * tamanho, tamanho);
+  noErase();
+  noFill();
+  rect(Xpontos[0] * tamanho, Ypontos[0] * tamanho, tamanho);
+  rect(Xpontos[1] * tamanho, Ypontos[1] * tamanho, tamanho);
+
   WritePixel(Xcenter, Ycenter, 1); //coloca o centro do círculo
   CirclePoints(x, y, Xcenter, Ycenter, k); //rotina para os pontos reflexos
 
@@ -395,9 +410,10 @@ function drawCircle() {
       y--;
     }
     x++;
-    i++;
     CirclePoints(x, y, Xcenter, Ycenter, k);
   }
+  //reseta para o usuário poder desenhar várias formas
+  counter = -1;
 }
 
 function resetaCanvas() {
@@ -457,7 +473,14 @@ function drawElipse() {
 
   Xcenter = x1 + a;
   Ycenter = y1 + b;
-  resetaCanvas();
+  erase();
+  rect(Xpontos[0] * tamanho, Ypontos[0] * tamanho, tamanho);
+  rect(Xpontos[1] * tamanho, Ypontos[1] * tamanho, tamanho);
+  noErase();
+  noFill();
+  rect(Xpontos[0] * tamanho, Ypontos[0] * tamanho, tamanho);
+  rect(Xpontos[1] * tamanho, Ypontos[1] * tamanho, tamanho);
+
   WritePixel(Xcenter, Ycenter, 1);
 
   let k = y1 - x1;
@@ -495,6 +518,8 @@ function drawElipse() {
     }
     EllipsePoints(x, y, Xcenter, Ycenter);
   }
+  //reseta para o usuário poder desenhar várias formas
+  counter = -1;
 }
 
 function EllipsePoints(x, y, Cx, Cy) {
