@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: "#FFF";
+}
+
+#general {
+  width: 100vw;
+  max-width: 1400px;
+
+  height: 100vh;
+  max-height: 768px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+#options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#columsnNumber {
+  margin-bottom: 15px;
+}
+
+#Antialiasing {
+  margin-top: 15px;
+}
+
+#AntialiasingCheckBox {
+  display: flex;
+  width: 100%;
+}
+
+#AntialiasingCheckBox input {
+  margin: 10px;
+}
