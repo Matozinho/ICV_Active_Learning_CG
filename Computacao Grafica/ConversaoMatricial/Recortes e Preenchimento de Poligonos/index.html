@@ -11,7 +11,26 @@
     <title>Preenchimento de Poligonos</title>
   </head>
   <body>
-    <h1>Recorte e Preenchimento de Poligonos</h1>
+    <div class="container">
+      <h1>Preenchimento de Poligonos</h1>
+      <main>
+        <section class="userOptions">
+          <form onsubmit="getPolygonColors(); return false">
+            <h3>Escolha as cores para o polígono</h3>
+            <div>
+              <label for="borderColor"> Cor das bordas </label>
+              <input type="color" id="borderColor" value="#000000" />
+            </div>
+            <div>
+              <label for="polygonColor"> Cor de preenchimento </label>
+              <input type="color" id="polygonColor" value="#000000" />
+            </div>
+            <button type="submit">Aplicar</button>
+          </form>
+        </section>
+        <section id="canvas"></section>
+      </main>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>
