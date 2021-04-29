@@ -1,0 +1,60 @@
+.userOptions {
+  display: block;
+  max-width: 350px;
+  min-width: 200px;
+  padding: 12px;
+  margin: auto auto;
+  max-height: 100%;
+}
+
+.userOptions form {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+}
+
+.userOptions form h3 {
+  margin: 5px;
+}
+
+.userOptions form div {
+  margin: 5px;
+  display: flex;
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+  justify-content: left;
+}
+
+.userOptions form div input {
+  position: absolute;
+  right: 0px;
+
+  cursor: pointer;
+  background-color: #fff;
+
+  border: none;
+}
+
+.userOptions button {
+  padding: 5px;
+  margin: 5px;
+  width: 40%;
+
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+
+  cursor: pointer;
+  transition: 0.6s;
+
+  background-color: rgb(202, 205, 214);
+}
+
+.userOptions button:hover {
+  background-color: rgb(123, 125, 133);
+}
