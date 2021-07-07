@@ -17,8 +17,6 @@ export function OptionsContainer() {
   const changeColors = () => {
     polygon.changeBorderColor(polygonBorderColor);
     polygon.changePolygonColor(polygonFillColor);
-
-    console.log("CahngeColor: ", polygon);
   }
 
   return (

@@ -6,19 +6,24 @@ type PolygonContextProviderProps = {
   children: ReactNode;
 }
 
-interface verticesType {
+interface PointType {
   x: number,
   y: number,
+}
+
+interface EdgesType {
+  [index: number]: PointType[];
 }
 
 interface PolygonType {
   borderColor: string;
   polygonColor: string;
-  vertices: verticesType[];
-  edges: object;
+  vertices: PointType[];
+  edges: EdgesType;
   isOpen: boolean;
   changeBorderColor: (newColor: string) => void;
   changePolygonColor: (newColor: string) => void;
+  defineEdge: (p1: PointType, p2: PointType) => void;
   reset: () => void;
 }
 
