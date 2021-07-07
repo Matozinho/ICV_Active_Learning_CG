@@ -66,8 +66,11 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
       polygon.isOpen = false;
 
       p5.line(firstVertice.x, firstVertice.y, lastVertice.x, lastVertice.y);
+
+      polygon.defineMaxsAndMins();
       polygon.defineEdge(firstVertice, lastVertice);
       defineEdge(p5, firstVertice, lastVertice);
+
       console.log(polygon);
     }
   }

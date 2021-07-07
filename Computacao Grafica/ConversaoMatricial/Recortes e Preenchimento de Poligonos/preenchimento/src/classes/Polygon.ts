@@ -13,6 +13,8 @@ class Polygon {
   vertices: PointType[];
   edges: EdgesType;
   isOpen: boolean;
+  maxCoordinantes: PointType;
+  minCoordinantes: PointType;
 
   constructor(borderColor: string, polygonColor: string) {
     this.borderColor = borderColor;
@@ -20,6 +22,14 @@ class Polygon {
     this.vertices = []
     this.edges = {}
     this.isOpen = true;
+    this.maxCoordinantes = {
+      x: Number.NEGATIVE_INFINITY,
+      y: Number.NEGATIVE_INFINITY
+    };
+    this.minCoordinantes = {
+      x: Number.POSITIVE_INFINITY,
+      y: Number.POSITIVE_INFINITY
+    };
   }
 
   changeBorderColor(newColor: string) {
@@ -34,6 +44,21 @@ class Polygon {
     this.isOpen = true;
     this.vertices = [];
     this.edges = {}
+  }
+
+  defineMaxsAndMins() {
+    let xCoordinantes: number[] = [];
+    let yCoordinantes: number[] = [];
+    
+    this.vertices.forEach((currentVertice) => {
+      xCoordinantes.push(currentVertice.x);
+      yCoordinantes.push(currentVertice.y);
+    });
+
+    this.maxCoordinantes.x = Math.max(...xCoordinantes);
+    this.minCoordinantes.x = Math.min(...xCoordinantes);
+    this.maxCoordinantes.y = Math.max(...yCoordinantes);
+    this.minCoordinantes.y = Math.min(...yCoordinantes);
   }
 
   defineEdge(p1: PointType, p2: PointType) {

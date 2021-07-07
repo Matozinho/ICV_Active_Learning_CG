@@ -24,6 +24,7 @@ interface PolygonType {
   changeBorderColor: (newColor: string) => void;
   changePolygonColor: (newColor: string) => void;
   defineEdge: (p1: PointType, p2: PointType) => void;
+  defineMaxsAndMins: () => void;
   reset: () => void;
 }
 
