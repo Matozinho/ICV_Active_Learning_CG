@@ -8,12 +8,14 @@ class Polygon {
   polygonColor: string;
   vertices: verticesType[];
   edges: object;
+  isOpen: boolean;
 
-  constructor() {
-    this.borderColor = "#000000";
-    this.polygonColor = "#000000";
+  constructor(borderColor: string, polygonColor: string) {
+    this.borderColor = borderColor;
+    this.polygonColor = polygonColor;
     this.vertices = []
     this.edges = {}
+    this.isOpen = true;
   }
 
   changeBorderColor(newColor: string) {
@@ -22,6 +24,12 @@ class Polygon {
 
   changePolygonColor(newColor: string) {
     this.borderColor = newColor;
+  }
+
+  reset() {
+    this.isOpen = true;
+    this.vertices = [];
+    this.edges = {}
   }
 }
 
