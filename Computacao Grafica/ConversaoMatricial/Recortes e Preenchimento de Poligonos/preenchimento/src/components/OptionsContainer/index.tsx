@@ -1,18 +1,29 @@
-import { useState } from 'react';
+import { useCanvasContext } from '../../hooks/useCanvasContext';
+import { usePolygonContext } from '../../hooks/usePolygonContext';
 import './styles.css';
 
 export function OptionsContainer() {
-  const [polygonBorderColor, setPolygonBorderColor] = useState("#000000");
-  const [polygonFillColor, setPolygonFillColor] = useState("#000000");
+  const {
+    polygon,
+    polygonBorderColor,
+    polygonFillColor,
+    setPolygonBorderColor,
+    setPolygonFillColor,
+  } = usePolygonContext();
 
-  const changeColors = (event: any) => {
-    event.preventDefault();
-    console.log("border Color: " + polygonBorderColor + " Fill Color: " + polygonFillColor);
+  const { setClearCanvas } = useCanvasContext();
+
+  // TODO: FIX Bug to change poligon colors
+  const changeColors = () => {
+    polygon.changeBorderColor(polygonBorderColor);
+    polygon.changePolygonColor(polygonFillColor);
+
+    console.log("CahngeColor: ", polygon);
   }
 
   return (
     <section className="userOptions">
-      <form onSubmit={changeColors}>
+      <form>
         <h3>Escolha as cores para o polígono</h3>
         <div>
           <label htmlFor="borderColor"> Cor das bordas </label>
@@ -32,10 +43,10 @@ export function OptionsContainer() {
             onChange={e => setPolygonFillColor(e.target.value)}
           />
         </div>
-        {/* TODO: 
-          Criar botão de limpar opções
-          Criar contexto para mudar as cores */}
-        <button type="submit">Aplicar</button>
+        <div className="buttonOptions">
+          <button type="button" onClick={changeColors}>Aplicar</button>
+          <button type="button" onClick={() => setClearCanvas(true)}>Limpar</button>
+        </div>
       </form>
     </section>
   )

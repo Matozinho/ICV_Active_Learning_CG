@@ -40,6 +40,11 @@
   border: none;
 }
 
+.buttonOptions {
+  display: flex;
+  width: 100%;
+}
+
 .userOptions button {
   padding: 5px;
   margin: 5px;
