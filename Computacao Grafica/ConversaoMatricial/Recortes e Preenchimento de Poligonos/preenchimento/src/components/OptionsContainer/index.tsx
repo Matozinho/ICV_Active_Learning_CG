@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import styles from './Styles.module.css';
+import './styles.css';
 
 export function OptionsContainer() {
   const [polygonBorderColor, setPolygonBorderColor] = useState("#000000");
   const [polygonFillColor, setPolygonFillColor] = useState("#000000");
 
-  const handleFormsData = event => {
+  const changeColors = (event: any) => {
     event.preventDefault();
     console.log("border Color: " + polygonBorderColor + " Fill Color: " + polygonFillColor);
   }
 
   return (
-    <section className={styles.userOptions}>
-      <form onSubmit={handleFormsData}>
+    <section className="userOptions">
+      <form onSubmit={changeColors}>
         <h3>Escolha as cores para o polígono</h3>
         <div>
           <label htmlFor="borderColor"> Cor das bordas </label>
@@ -32,6 +32,9 @@ export function OptionsContainer() {
             onChange={e => setPolygonFillColor(e.target.value)}
           />
         </div>
+        {/* TODO: 
+          Criar botão de limpar opções
+          Criar contexto para mudar as cores */}
         <button type="submit">Aplicar</button>
       </form>
     </section>
