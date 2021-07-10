@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { createContext, ReactNode } from "react";
 import { Polygon } from "../classes/Polygon";
+import p5Types from 'p5';
 
 type PolygonContextProviderProps = {
   children: ReactNode;
@@ -11,20 +12,19 @@ interface PointType {
   y: number,
 }
 
-interface EdgesType {
-  [index: number]: PointType[];
-}
-
 interface PolygonType {
   borderColor: string;
   polygonColor: string;
   vertices: PointType[];
-  edges: EdgesType;
+  intersections: Map<number, number[]>;
   isOpen: boolean;
+  maxCoordinantes: PointType;
+  minCoordinantes: PointType;
   changeBorderColor: (newColor: string) => void;
   changePolygonColor: (newColor: string) => void;
-  defineEdge: (p1: PointType, p2: PointType) => void;
   defineMaxsAndMins: () => void;
+  scanLine: (p1: PointType, p2: PointType) => void;
+  fillPolygon: (p5: p5Types) => void;
   reset: () => void;
 }
 

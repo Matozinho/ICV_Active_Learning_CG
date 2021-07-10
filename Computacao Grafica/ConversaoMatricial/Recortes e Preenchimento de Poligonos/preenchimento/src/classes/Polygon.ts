@@ -1,26 +1,27 @@
+import { quickSort } from "../utils/quickSort";
+import p5Types from 'p5';
+
 interface PointType {
   x: number,
   y: number, 
-}
-
-interface EdgesType {
-  [index: number]: PointType[];
 }
 
 class Polygon {
   borderColor: string;
   polygonColor: string;
   vertices: PointType[];
-  edges: EdgesType;
+  //The keys are the y Values and the array are all the X values intersection
+  intersections: Map<number, number[]>; 
   isOpen: boolean;
   maxCoordinantes: PointType;
   minCoordinantes: PointType;
 
+
   constructor(borderColor: string, polygonColor: string) {
     this.borderColor = borderColor;
     this.polygonColor = polygonColor;
-    this.vertices = []
-    this.edges = {}
+    this.vertices = [];
+    this.intersections = new Map();
     this.isOpen = true;
     this.maxCoordinantes = {
       x: Number.NEGATIVE_INFINITY,
@@ -43,7 +44,7 @@ class Polygon {
   reset() {
     this.isOpen = true;
     this.vertices = [];
-    this.edges = {}
+    this.intersections = new Map();
   }
 
   defineMaxsAndMins() {
@@ -61,39 +62,56 @@ class Polygon {
     this.minCoordinantes.y = Math.min(...yCoordinantes);
   }
 
-  defineEdge(p1: PointType, p2: PointType) {
-    let edgePoints = []
+  // Defines all the X point in a edge
+  scanLine(p1: PointType, p2: PointType) {
+    const intersections = this.intersections;
+    let initialPoint: number, endPoint: number;
+    let currentX: number;
 
-    if (p2.y < p1.y)
-      [p1, p2] = [p2, p1];
+    if (p1.y !== p2.y) {
+      const deltaX = (p2.x - p1.x) / (p2.y - p1.y);
 
-    let deltaX = (p2.x - p1.x) / (p2.y - p1.y);
+      initialPoint = p1.y;
+      endPoint = p2.y;
+      currentX = p1.x;
 
-    if (deltaX > 1 || deltaX < -1) {
-      if (p1.x > p2.x)
-        [p1, p2] = [p2, p1];
-
-      deltaX = (p2.y - p1.y) / (p2.x - p1.x);
-
-      let currentY = p1.y;
-
-      for (let i = p1.x; i < p2.x; i++) {
-        currentY += deltaX;
-        let currentPoint = { x: i, y: currentY }
-        edgePoints.push(currentPoint);
+      if (p1.y > p2.y) {
+        [initialPoint, endPoint] = [endPoint, initialPoint]; // Swap Points
+        currentX = p2.x;
       }
-    } else {
-      let currentX = p1.x;
 
-      for (let i = p1.y; i < p2.y; i++) {
+      for (let j = initialPoint; j < endPoint; j++) {
+        if (!intersections.get(j))
+          intersections.set(j, [currentX]);
+        else
+          intersections.get(j)?.push(currentX);
         currentX += deltaX;
-        let currentPoint = { x: currentX, y: i }
-        edgePoints.push(currentPoint);
       }
     }
 
-    const idx = Object.keys(this.edges).length;
-    this.edges[idx] = edgePoints;
+    // Order array with X coordinantes of each Y point (key of the map)
+    intersections.forEach(content => quickSort(content, 0, (content.length - 1)));
+  }
+
+  fillPolygon (p5: p5Types) {
+    const initialY = this.minCoordinantes.y;
+    const endY = this.maxCoordinantes.y;
+    const intersections = this.intersections;
+
+    for (let i = initialY; i < endY; i++) {
+      const currentPoint = intersections.get(i) || [0];
+      let k = 0;
+
+      do {
+        let firstX = currentPoint[k];
+        let endX = currentPoint[k + 1];
+
+        for (let j = firstX; j < endX; j++)
+          p5.point(j, i);
+
+        k += 2;
+      } while (currentPoint[k]);
+    }
   }
 }
 

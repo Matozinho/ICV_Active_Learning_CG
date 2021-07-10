@@ -21,57 +21,40 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
 
   let canvas;
 
-  // TODO: Remove it after debug
-  const defineEdge = (p5: p5Types, p1: PointType, p2: PointType) => {
-    p5.fill("#ff0000");
-    p5.stroke("#ff0000");
+  const closePolygon = (p5: p5Types) => {
+    const firstVertice = polygon.vertices[0];
+    const lastVertice = polygon.vertices[polygon.vertices.length - 1];
 
-    let edgePoints = []
+    p5.line(firstVertice.x, firstVertice.y, lastVertice.x, lastVertice.y);
 
-    if (p2.y < p1.y)
-      [p1, p2] = [p2, p1];
+    polygon.scanLine(firstVertice, lastVertice);
+    polygon.defineMaxsAndMins();
+    polygon.fillPolygon(p5);
+  }
 
-    let deltaX = (p2.x - p1.x) / (p2.y - p1.y);
+  const setVertice = (p5: p5Types, currentVertice: PointType) => {
+    const verticesLength = polygon.vertices.length;
 
-    if (deltaX > 1 || deltaX < -1) {
-      if (p1.x > p2.x)
-        [p1, p2] = [p2, p1];
+    polygon.vertices.push(currentVertice);
 
-      deltaX = (p2.y - p1.y) / (p2.x - p1.x);
+    p5.stroke(polygon.borderColor);
+    p5.fill(polygon.borderColor);
+    p5.circle(currentVertice.x, currentVertice.y, 2);
 
-      let currentY = p1.y;
+    if (verticesLength) {
+      const lastVertice = polygon.vertices[verticesLength - 1];
 
-      for (let i = p1.x; i < p2.x; i++) {
-        currentY += deltaX;
-        let currentPoint = { x: i, y: currentY }
-        edgePoints.push(currentPoint);
-        p5.circle(currentPoint.x, currentPoint.y, 1);
-      }
-    } else {
-      let currentX = p1.x;
-
-      for (let i = p1.y; i < p2.y; i++) {
-        currentX += deltaX;
-        let currentPoint = { x: currentX, y: i }
-        edgePoints.push(currentPoint);
-        p5.circle(currentPoint.x, currentPoint.y, 1);
-      }
+      polygon.scanLine(currentVertice, lastVertice); // Define all the X points in the edge to fill polygon after
+      p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y); // Draw line
     }
   }
 
   const keyPressed = (p5: p5Types) => {
     if ((p5.keyCode === 32 || p5.keyCode === 13) && polygon.isOpen) {
-      const firstVertice = polygon.vertices[0];
-      const lastVertice = polygon.vertices[polygon.vertices.length - 1];
-      polygon.isOpen = false;
-
-      p5.line(firstVertice.x, firstVertice.y, lastVertice.x, lastVertice.y);
-
-      polygon.defineMaxsAndMins();
-      polygon.defineEdge(firstVertice, lastVertice);
-      defineEdge(p5, firstVertice, lastVertice);
-
-      console.log(polygon);
+      if (polygon.vertices.length > 2)
+        closePolygon(p5);
+      else
+        alert("O polígono deve ter no mínimo três lados!");
     }
   }
 
@@ -80,28 +63,16 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
 
     canvas.mouseClicked(() => {
       if (polygon.isOpen) {
-        const verticesLength = polygon.vertices.length;
-        const currentVertice = { x: p5.mouseX, y: p5.mouseY };
+        const x = Math.trunc(p5.mouseX);
+        const y = Math.trunc(p5.mouseY);
 
-        polygon.vertices.push(currentVertice);
-
-        p5.stroke(polygon.borderColor);
-        p5.fill(polygon.borderColor);
-        p5.circle(currentVertice.x, currentVertice.y, 2);
-
-        if (verticesLength) {
-          p5.stroke(polygon.borderColor);
-          const lastVertice = polygon.vertices[verticesLength - 1];
-          p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y);
-
-          polygon.defineEdge(lastVertice, currentVertice);
-          defineEdge(p5, lastVertice, currentVertice);
-        }
+        setVertice(p5, { x: x, y: y });
       }
     });
   };
 
   const draw = (p5: p5Types) => {
+    // Verify all every time if clearCanvas is true (if button "Limpar" was pressed)
     if (clearCanvas) {
       p5.clear();
       polygon.reset();
