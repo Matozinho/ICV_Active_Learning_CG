@@ -1,0 +1,67 @@
+procedure Add_Spans(Vert1, Vert2 : PtrPontos);
+   var
+      um_m,
+      curX     : real;
+      i, f     : integer;
+   begin
+      if (Vert1^.Y <> Vert2^.Y) then begin
+         um_m := (Vert2^.X - Vert1^.X)/(Vert2^.Y - Vert1^.Y);
+         if (Vert1^.Y < Vert2^.Y) then begin
+            i := Vert1^.Y;
+            f := Vert2^.Y;
+            curX := Vert1^.X;
+         end
+         else begin
+            i := Vert2^.Y;
+            f := Vert1^.Y;
+            curX := Vert2^.X;
+         end;
+
+ 
+
+         repeat
+            setlength(Spans[i - Ret.Bottom], length(Spans[i - Ret.Bottom])+1);
+            Spans[i - Ret.Bottom][length(Spans[i - Ret.Bottom])-1] := curX;
+            curX := curX + um_m;
+            inc(i);
+         until (i = f);
+
+ 
+
+      end;
+   end;
+
+
+procedure OrdenaSpans;
+   var
+      i, j, k,
+      min      : integer;
+      tmp      : real;
+   begin
+      for i := 0 to (length(Spans) - 1) do begin
+         for j := 0 to (length(Spans[i]) - 2) do begin
+            min := j;
+            for k := (j + 1) to (length(Spans[i]) - 1) do
+               if (Spans[i][k] < Spans[i][min]) then min := k;
+            tmp := Spans[i][j];
+            Spans[i][j] := Spans[i][min];
+            Spans[i][min] := tmp;
+         end;
+      end;
+   end;
+
+procedure PintaSpans;
+   var
+      i, j     : integer;
+   begin
+      for i := 0 to (Ret.Top - Ret.Bottom) do begin
+         j := 0;
+         if (length(Spans[i]) <> 0) then begin
+            repeat
+               PB.Canvas.MoveTo(round(Spans[i][j]), i + Ret.Bottom);
+               PB.Canvas.LineTo(round(Spans[i][j+1]), i + Ret.Bottom);
+               j := j + 2;
+            until (j >= length(Spans[i]));
+         end;
+      end;
+   end;
