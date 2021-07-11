@@ -4,20 +4,14 @@ import './styles.css';
 
 export function OptionsContainer() {
   const {
-    polygon,
     polygonBorderColor,
     polygonFillColor,
     setPolygonBorderColor,
     setPolygonFillColor,
+    setColorsWasChanged,
   } = usePolygonContext();
 
   const { setClearCanvas } = useCanvasContext();
-
-  // TODO: FIX Bug to change poligon colors
-  const changeColors = () => {
-    polygon.changeBorderColor(polygonBorderColor);
-    polygon.changePolygonColor(polygonFillColor);
-  }
 
   return (
     <section className="userOptions">
@@ -42,7 +36,7 @@ export function OptionsContainer() {
           />
         </div>
         <div className="buttonOptions">
-          <button type="button" onClick={changeColors}>Aplicar</button>
+          <button type="button" onClick={() => setColorsWasChanged(true)}>Aplicar</button>
           <button type="button" onClick={() => setClearCanvas(true)}>Limpar</button>
         </div>
       </form>

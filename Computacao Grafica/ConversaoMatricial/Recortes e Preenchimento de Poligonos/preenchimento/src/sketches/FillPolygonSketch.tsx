@@ -16,7 +16,13 @@ interface PointType {
 }
 
 export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvasHeight }: FillPolygonSketchType) {
-  const { polygon } = usePolygonContext();
+  const {
+    polygon,
+    polygonBorderColor,
+    polygonFillColor,
+    colorsWasChanged,
+    setColorsWasChanged
+  } = usePolygonContext();
   const { clearCanvas, setClearCanvas } = useCanvasContext();
 
   let canvas;
@@ -24,6 +30,7 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
   const closePolygon = (p5: p5Types) => {
     const firstVertice = polygon.vertices[0];
     const lastVertice = polygon.vertices[polygon.vertices.length - 1];
+    polygon.isOpen = false;
 
     p5.line(firstVertice.x, firstVertice.y, lastVertice.x, lastVertice.y);
 
@@ -72,6 +79,11 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
   };
 
   const draw = (p5: p5Types) => {
+    if (colorsWasChanged) {
+      setColorsWasChanged(false);
+      polygon.setColors(p5, polygonBorderColor, polygonFillColor);
+    }
+
     // Verify all every time if clearCanvas is true (if button "Limpar" was pressed)
     if (clearCanvas) {
       p5.clear();
