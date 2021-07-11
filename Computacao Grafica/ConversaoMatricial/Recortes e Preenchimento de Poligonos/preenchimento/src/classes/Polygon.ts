@@ -33,14 +33,6 @@ class Polygon {
     };
   }
 
-  changeBorderColor(newColor: string) {
-    this.borderColor = newColor;
-  }
-
-  changePolygonColor(newColor: string) {
-    this.borderColor = newColor;
-  }
-
   reset() {
     this.isOpen = true;
     this.vertices = [];

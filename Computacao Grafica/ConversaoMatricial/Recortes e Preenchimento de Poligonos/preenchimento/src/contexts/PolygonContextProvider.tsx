@@ -16,12 +16,7 @@ interface PolygonType {
   borderColor: string;
   polygonColor: string;
   vertices: PointType[];
-  intersections: Map<number, number[]>;
   isOpen: boolean;
-  maxCoordinantes: PointType;
-  minCoordinantes: PointType;
-  changeBorderColor: (newColor: string) => void;
-  changePolygonColor: (newColor: string) => void;
   defineMaxsAndMins: () => void;
   scanLine: (p1: PointType, p2: PointType) => void;
   fillPolygon: (p5: p5Types) => void;
