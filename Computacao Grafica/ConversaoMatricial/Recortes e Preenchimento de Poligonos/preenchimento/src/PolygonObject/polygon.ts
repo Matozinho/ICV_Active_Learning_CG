@@ -41,6 +41,23 @@ export const polygon: PolygonType = {
     this.fillColor = newFillColor;
 
     p5.clear();
+
+    // re-draw all the vertices 
+    p5.stroke(this.borderColor);
+    p5.fill(this.borderColor);
+    const size = this.vertices.length
+    
+    for (let i = 1; i <= size; i++) {
+      p5.circle(this.vertices[i % size].x, this.vertices[i % size].y, 2);
+      p5.line(
+        this.vertices[i-1].x,
+        this.vertices[i-1].y,
+        this.vertices[i % size].x,
+        this.vertices[i % size].y
+      );
+    }
+
+    // re-fill the polygon
     this.fillPolygon(p5);
   },
 
