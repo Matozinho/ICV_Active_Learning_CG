@@ -78,6 +78,14 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
     });
   };
 
+  const mouseClicked = (p5: p5Types) => {
+    if (p5.mouseButton === 'right' && polygon.isOpen)
+      if (polygon.vertices.length > 2)
+        closePolygon(p5);
+      else
+        alert("O polígono deve ter no mínimo três lados");
+  };
+
   const draw = (p5: p5Types) => {
     if (colorsWasChanged) {
       setColorsWasChanged(false);
@@ -93,5 +101,5 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
     }
   }
 
-  return <Sketch setup={setup} draw={draw} keyPressed={keyPressed} />
+  return <Sketch setup={setup} draw={draw} mouseClicked={mouseClicked} keyPressed={keyPressed} />
 }
