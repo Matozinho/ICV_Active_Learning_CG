@@ -1,5 +1,5 @@
 import Sketch from "react-p5";
-import p5Types from 'p5';
+import p5Types from "p5";
 
 import { usePolygonContext } from "../hooks/usePolygonContext";
 import { useCanvasContext } from "../hooks/useCanvasContext";
@@ -11,19 +11,29 @@ interface FillPolygonSketchType {
 }
 
 interface PointType {
-  x: number,
-  y: number,
+  x: number;
+  y: number;
 }
 
-export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvasHeight }: FillPolygonSketchType) {
+export default function FillPolygonSketch({
+  canvasParentRef,
+  canvasWidth,
+  canvasHeight,
+}: FillPolygonSketchType) {
   const {
     polygon,
     polygonBorderColor,
     polygonFillColor,
     colorsWasChanged,
-    setColorsWasChanged
+    setColorsWasChanged,
   } = usePolygonContext();
-  const { clearCanvas, setClearCanvas } = useCanvasContext();
+
+  const {
+    clearCanvas,
+    rightButtonClicked,
+    setClearCanvas,
+    setRightButtonClicked,
+  } = useCanvasContext();
 
   let canvas;
 
@@ -37,7 +47,7 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
     polygon.scanLine(firstVertice, lastVertice);
     polygon.defineMaxsAndMins();
     polygon.fillPolygon(p5);
-  }
+  };
 
   const setVertice = (p5: p5Types, currentVertice: PointType) => {
     const verticesLength = polygon.vertices.length;
@@ -54,16 +64,14 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
       polygon.scanLine(currentVertice, lastVertice); // Define all the X points in the edge to fill polygon after
       p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y); // Draw line
     }
-  }
+  };
 
   const keyPressed = (p5: p5Types) => {
     if ((p5.keyCode === 32 || p5.keyCode === 13) && polygon.isOpen) {
-      if (polygon.vertices.length > 2)
-        closePolygon(p5);
-      else
-        alert("O polígono deve ter no mínimo três lados!");
+      if (polygon.vertices.length > 2) closePolygon(p5);
+      else alert("O polígono deve ter no mínimo três lados!");
     }
-  }
+  };
 
   const setup = (p5: p5Types) => {
     canvas = p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -79,14 +87,19 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
   };
 
   const mouseClicked = (p5: p5Types) => {
-    if (p5.mouseButton === 'right' && polygon.isOpen)
-      if (polygon.vertices.length > 2)
-        closePolygon(p5);
-      else
-        alert("O polígono deve ter no mínimo três lados");
+    if (p5.mouseButton === "right" && polygon.isOpen)
+      if (polygon.vertices.length > 2) closePolygon(p5);
+      else alert("O polígono deve ter no mínimo três lados");
   };
 
   const draw = (p5: p5Types) => {
+    if (rightButtonClicked) {
+      setRightButtonClicked(false);
+      if (polygon.isOpen) {
+        if (polygon.vertices.length > 2) closePolygon(p5);
+        else alert("O polígono deve ter no mínimo três lados");
+      }
+    }
     if (colorsWasChanged) {
       setColorsWasChanged(false);
       polygon.setColors(p5, polygonBorderColor, polygonFillColor);
@@ -99,7 +112,15 @@ export default function FillPolygonSketch({ canvasParentRef, canvasWidth, canvas
 
       setClearCanvas(false);
     }
-  }
+  };
 
-  return <Sketch setup={setup} draw={draw} mouseClicked={mouseClicked} keyPressed={keyPressed} />
+  return (
+    <Sketch
+      setup={setup}
+      draw={draw}
+      mouseClicked={mouseClicked}
+      keyPressed={keyPressed}
+    />
+  );
 }
+
