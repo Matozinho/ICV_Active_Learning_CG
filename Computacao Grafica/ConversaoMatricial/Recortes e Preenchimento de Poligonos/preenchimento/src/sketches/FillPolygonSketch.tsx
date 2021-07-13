@@ -20,6 +20,7 @@ export default function FillPolygonSketch({
   canvasWidth,
   canvasHeight,
 }: FillPolygonSketchType) {
+
   const {
     polygon,
     polygonBorderColor,
@@ -56,26 +57,34 @@ export default function FillPolygonSketch({
 
     p5.stroke(polygon.borderColor);
     p5.fill(polygon.borderColor);
-    p5.circle(currentVertice.x, currentVertice.y, 2);
+    p5.circle(currentVertice.x, currentVertice.y, 2); // Draw the vertice
 
+    // Verify if has more then 1 vertice to draw the edge
     if (verticesLength) {
       const lastVertice = polygon.vertices[verticesLength - 1];
 
       polygon.scanLine(currentVertice, lastVertice); // Define all the X points in the edge to fill polygon after
-      p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y); // Draw line
+      p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y);
     }
   };
 
+  const redirect = (p5: p5Types) => {
+    if (polygon.vertices.length > 2)
+      closePolygon(p5);
+    else alert("O Polígono deve ter no mínimo três lados!");
+  }
+
+  // Verify if space or enter waas clicked to close polygon
   const keyPressed = (p5: p5Types) => {
-    if ((p5.keyCode === 32 || p5.keyCode === 13) && polygon.isOpen) {
-      if (polygon.vertices.length > 2) closePolygon(p5);
-      else alert("O polígono deve ter no mínimo três lados!");
-    }
+    if ((p5.keyCode === 32 || p5.keyCode === 13) && polygon.isOpen)
+      redirect(p5);
   };
 
   const setup = (p5: p5Types) => {
     canvas = p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
+    p5.strokeWeight(2.5);
 
+    // Capture all click in cavas to set the vertices
     canvas.mouseClicked(() => {
       if (polygon.isOpen) {
         const x = Math.trunc(p5.mouseX);
@@ -86,20 +95,15 @@ export default function FillPolygonSketch({
     });
   };
 
-  const mouseClicked = (p5: p5Types) => {
-    if (p5.mouseButton === "right" && polygon.isOpen)
-      if (polygon.vertices.length > 2) closePolygon(p5);
-      else alert("O polígono deve ter no mínimo três lados");
-  };
-
   const draw = (p5: p5Types) => {
+    // Verify if flag to close polygon with right button has changed
     if (rightButtonClicked) {
       setRightButtonClicked(false);
-      if (polygon.isOpen) {
-        if (polygon.vertices.length > 2) closePolygon(p5);
-        else alert("O polígono deve ter no mínimo três lados");
-      }
+      if (polygon.isOpen)
+        redirect(p5);
     }
+
+    // Verify if flag to change colors has changed
     if (colorsWasChanged) {
       setColorsWasChanged(false);
       polygon.setColors(p5, polygonBorderColor, polygonFillColor);
@@ -118,7 +122,6 @@ export default function FillPolygonSketch({
     <Sketch
       setup={setup}
       draw={draw}
-      mouseClicked={mouseClicked}
       keyPressed={keyPressed}
     />
   );

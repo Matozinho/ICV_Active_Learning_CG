@@ -1,9 +1,9 @@
 import { quickSort } from "../utils/quickSort";
-import p5Types from 'p5';
+import p5Types from "p5";
 
 interface PointType {
-  x: number,
-  y: number, 
+  x: number;
+  y: number;
 }
 
 interface PolygonType {
@@ -18,7 +18,11 @@ interface PolygonType {
   defineMaxsAndMins: () => void;
   scanLine: (p1: PointType, p2: PointType) => void;
   fillPolygon: (p5: p5Types) => void;
-  setColors: (p5: p5Types, newBorderColor: string, newFillColor: string) => void;
+  setColors: (
+    p5: p5Types,
+    newBorderColor: string,
+    newFillColor: string,
+  ) => void;
 }
 
 export const polygon: PolygonType = {
@@ -29,35 +33,18 @@ export const polygon: PolygonType = {
   isOpen: true,
   maxCoordinantes: {
     x: Number.NEGATIVE_INFINITY,
-    y: Number.NEGATIVE_INFINITY
+    y: Number.NEGATIVE_INFINITY,
   },
   minCoordinantes: {
     x: Number.POSITIVE_INFINITY,
-    y: Number.POSITIVE_INFINITY
+    y: Number.POSITIVE_INFINITY,
   },
 
   setColors(p5: p5Types, newBorderColor: string, newFillColor: string) {
     this.borderColor = newBorderColor;
     this.fillColor = newFillColor;
 
-    p5.clear();
-
-    // re-draw all the vertices 
-    p5.stroke(this.borderColor);
-    p5.fill(this.borderColor);
-    const size = this.vertices.length
-    
-    for (let i = 1; i <= size; i++) {
-      p5.circle(this.vertices[i % size].x, this.vertices[i % size].y, 2);
-      p5.line(
-        this.vertices[i-1].x,
-        this.vertices[i-1].y,
-        this.vertices[i % size].x,
-        this.vertices[i % size].y
-      );
-    }
-
-    // re-fill the polygon
+    // re-draw the polygon
     this.fillPolygon(p5);
   },
 
@@ -70,7 +57,7 @@ export const polygon: PolygonType = {
   defineMaxsAndMins() {
     let xCoordinantes: number[] = [];
     let yCoordinantes: number[] = [];
-    
+
     this.vertices.forEach((currentVertice) => {
       xCoordinantes.push(currentVertice.x);
       yCoordinantes.push(currentVertice.y);
@@ -85,53 +72,71 @@ export const polygon: PolygonType = {
   // Defines all the X point in a edge
   scanLine(p1: PointType, p2: PointType) {
     const intersections = this.intersections;
-    let initialPoint: number, endPoint: number;
+    let initialY: number, endY: number;
     let currentX: number;
 
     if (p1.y !== p2.y) {
       const deltaX = (p2.x - p1.x) / (p2.y - p1.y);
 
-      initialPoint = p1.y;
-      endPoint = p2.y;
+      initialY = p1.y;
+      endY = p2.y;
       currentX = p1.x;
 
       if (p1.y > p2.y) {
-        [initialPoint, endPoint] = [endPoint, initialPoint]; // Swap Points
+        [initialY, endY] = [endY, initialY]; // Swap Points
         currentX = p2.x;
       }
 
-      for (let j = initialPoint; j < endPoint; j++) {
-        if (!intersections.get(j))
-          intersections.set(j, [currentX]);
-        else
-          intersections.get(j)?.push(currentX);
+      for (let currentY = initialY; currentY < endY; currentY++) {
+        if (!intersections.get(currentY)) intersections.set(currentY, [currentX]);
+        else intersections.get(currentY)?.push(currentX);
         currentX += deltaX;
       }
     }
 
     // Order array with X coordinantes of each Y point (key of the map)
-    intersections.forEach(content => quickSort(content, 0, (content.length - 1)));
+    intersections.forEach((node) =>
+      quickSort(node, 0, node.length - 1),
+    );
   },
 
-  fillPolygon (p5: p5Types) {
+  fillPolygon(p5: p5Types) {
+    p5.clear();
     p5.stroke(this.fillColor);
+
     const initialY = this.minCoordinantes.y;
     const endY = this.maxCoordinantes.y;
     const intersections = this.intersections;
 
-    for (let i = initialY; i < endY; i++) {
-      const currentPoint = intersections.get(i) || [0];
+    for (let currentY = initialY; currentY < endY; currentY++) {
+      const currentPoint = intersections.get(currentY) || [0];
       let k = 0;
 
       do {
         let firstX = currentPoint[k];
         let endX = currentPoint[k + 1];
 
-        for (let j = firstX; j < endX; j++)
-          p5.point(j, i);
+        for (let currentX = firstX; currentX < endX; currentX++)
+          p5.point(currentX, currentY);
 
         k += 2;
       } while (currentPoint[k]);
     }
-  }
-}
+
+    p5.stroke(this.borderColor);
+    p5.fill(this.borderColor);
+
+    const size = this.vertices.length;
+
+    for (let i = 1; i <= size; i++) {
+      p5.circle(this.vertices[i % size].x, this.vertices[i % size].y, 2);
+      p5.line(
+        this.vertices[i - 1].x,
+        this.vertices[i - 1].y,
+        this.vertices[i % size].x,
+        this.vertices[i % size].y,
+      );
+    }
+  },
+};
+
