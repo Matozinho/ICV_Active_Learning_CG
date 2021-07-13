@@ -18,7 +18,7 @@ A aplicação **NÃO** é responsiva e se adapta a monitores de resolução supe
 
 ## Especificações técnicas
 
-A aplicação foi desenvolvida utilizando a biblioteca [React](https://pt-br.reactjs.org/), a partir do [create react app](https://github.com/facebook/create-react-app), em ambiente linux (ubuntu 21.04). A biblioteca React permite a componentização de elementos da interface, além da utilização do [ES6](https://262.ecma-international.org/6.0/), para uma melhor organização de código. Para facilitar a interação com o _canvas_, utilizou-se a biblioteca [P5.js](https://p5js.org/).
+A aplicação foi desenvolvida utilizando a biblioteca [React](https://pt-br.reactjs.org/), a partir do [create react app](https://github.com/facebook/create-react-app), em ambiente linux (ubuntu 20.04). A biblioteca React permite a componentização de elementos da interface, além da utilização do [ES6](https://262.ecma-international.org/6.0/), para uma melhor organização de código. Para facilitar a interação com o _canvas_, utilizou-se a biblioteca [P5.js](https://p5js.org/).
 
 Além disso, visando uma melhor escalabilidade, compreensão e propiciar um desenvolvimento colaborativo, optou-se por utilizar o _superset_ [Typescript](https://www.typescriptlang.org/), pois esse adiciona tipagem à linguagem e, que juntamente com [linters](https://sourcelevel.io/blog/what-is-a-linter-and-why-your-team-should-use-it) facilitam o desenvolvimento.
 
