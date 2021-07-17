@@ -5,6 +5,7 @@ import { Canvas } from './components/Canvas';
 
 import { PolygonContextProvider } from './contexts/PolygonContextProvider';
 import { CanvasContextProvider } from './contexts/CanvasContextProvider';
+import { GithubCorner } from './components/GithubCorner';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <main className="main">
         <CanvasContextProvider>
           <PolygonContextProvider>
+            <GithubCorner />
             <OptionsContainer />
             <Canvas />
           </PolygonContextProvider>
