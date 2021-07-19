@@ -12,10 +12,11 @@ interface PolygonType {
   vertices: PointType[];
   intersections: Map<number, number[]>;
   isOpen: boolean;
-  maxCoordinantes: PointType;
-  minCoordinantes: PointType;
+  maxY: number;
+  minY: number;
   reset: () => void;
-  defineMaxsAndMins: () => void;
+  defineMaxAndMin: () => void;
+  close: (p5: p5Types) => void;
   scanLine: (p1: PointType, p2: PointType) => void;
   fillPolygon: (p5: p5Types) => void;
   setColors: (
@@ -31,14 +32,8 @@ export const polygon: PolygonType = {
   vertices: [],
   intersections: new Map(),
   isOpen: true,
-  maxCoordinantes: {
-    x: Number.NEGATIVE_INFINITY,
-    y: Number.NEGATIVE_INFINITY,
-  },
-  minCoordinantes: {
-    x: Number.POSITIVE_INFINITY,
-    y: Number.POSITIVE_INFINITY,
-  },
+  maxY: Number.NEGATIVE_INFINITY,
+  minY: Number.POSITIVE_INFINITY,
 
   setColors(p5: p5Types, newBorderColor: string, newFillColor: string) {
     this.borderColor = newBorderColor;
@@ -54,7 +49,7 @@ export const polygon: PolygonType = {
     this.intersections = new Map();
   },
 
-  defineMaxsAndMins() {
+  defineMaxAndMin() {
     let xCoordinantes: number[] = [];
     let yCoordinantes: number[] = [];
 
@@ -63,10 +58,24 @@ export const polygon: PolygonType = {
       yCoordinantes.push(currentVertice.y);
     });
 
-    this.maxCoordinantes.x = Math.max(...xCoordinantes);
-    this.minCoordinantes.x = Math.min(...xCoordinantes);
-    this.maxCoordinantes.y = Math.max(...yCoordinantes);
-    this.minCoordinantes.y = Math.min(...yCoordinantes);
+    this.maxY = Math.max(...yCoordinantes);
+    this.minY = Math.min(...yCoordinantes);
+  },
+
+  close(p5: p5Types) {
+    const firstVertice = this.vertices[0];
+    const lastVertice = this.vertices[this.vertices.length - 1];
+
+    this.isOpen = false;
+    this.scanLine(firstVertice, lastVertice);
+    this.defineMaxAndMin();
+    
+    // Order array with X coordinantes of each Y point (key of the map)
+    this.intersections.forEach((node) =>
+      quickSort(node, 0, node.length - 1),
+    );
+
+    this.fillPolygon(p5);
   },
 
   // Defines all the X point in a edge
@@ -93,19 +102,14 @@ export const polygon: PolygonType = {
         currentX += deltaX;
       }
     }
-
-    // Order array with X coordinantes of each Y point (key of the map)
-    intersections.forEach((node) =>
-      quickSort(node, 0, node.length - 1),
-    );
   },
 
   fillPolygon(p5: p5Types) {
     p5.clear();
     p5.stroke(this.fillColor);
 
-    const initialY = this.minCoordinantes.y;
-    const endY = this.maxCoordinantes.y;
+    const initialY = this.minY;
+    const endY = this.maxY;
     const intersections = this.intersections;
 
     for (let currentY = initialY; currentY < endY; currentY++) {

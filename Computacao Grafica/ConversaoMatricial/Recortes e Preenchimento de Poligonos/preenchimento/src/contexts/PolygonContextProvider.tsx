@@ -17,14 +17,14 @@ interface PolygonType {
   fillColor: string;
   vertices: PointType[];
   isOpen: boolean;
-  defineMaxsAndMins: () => void;
+  defineMaxAndMin: () => void;
   scanLine: (p1: PointType, p2: PointType) => void;
+  close: (p5: p5Types) => void;
   fillPolygon: (p5: p5Types) => void;
   reset: () => void;
   setColors: (p5: p5Types, newBorderColor: string, newFillColor: string) => void;
 }
 
-// TODO: Fazer tipagem do polygon
 interface PolygonContextType {
   polygonBorderColor: string;
   polygonFillColor: string;

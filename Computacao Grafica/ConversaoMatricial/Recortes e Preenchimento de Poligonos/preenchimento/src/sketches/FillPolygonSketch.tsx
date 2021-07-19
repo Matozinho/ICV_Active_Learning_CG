@@ -41,13 +41,10 @@ export default function FillPolygonSketch({
   const closePolygon = (p5: p5Types) => {
     const firstVertice = polygon.vertices[0];
     const lastVertice = polygon.vertices[polygon.vertices.length - 1];
-    polygon.isOpen = false;
 
     p5.line(firstVertice.x, firstVertice.y, lastVertice.x, lastVertice.y);
 
-    polygon.scanLine(firstVertice, lastVertice);
-    polygon.defineMaxsAndMins();
-    polygon.fillPolygon(p5);
+    polygon.close(p5);
   };
 
   const setVertice = (p5: p5Types, currentVertice: PointType) => {
