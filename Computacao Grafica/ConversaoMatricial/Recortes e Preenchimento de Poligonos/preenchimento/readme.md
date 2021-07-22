@@ -1,14 +1,16 @@
-<div style="display: flex; justify-content: space-between; align-items: center">
-  <img src="./readmeImages/LOGO_UNIOESTE.png" height="100px" alt="Logo da Unioeste" />
-  <img src="./readmeImages/LOGO_PET.png" height="50px" alt="Logo da Unioeste" />
-</div>
+<header>
+  <img src="./readmeImages/LOGO_UNIOESTE.png" height="100px" alt="Logo da Unioeste" align="left"/>
+  <img src="./readmeImages/LOGO_PET.png" height="50px" alt="Logo da Unioeste" align="right"/>
+</header>
 
-<div align="center">
-
+<br/><br/><br/>
+ 
+ <div align="center">
+ 
 # Preenchimento de Polígonos
+
 </div>
-
-
+  
 Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 2020/2021, através do grupo [PETComp](https://petsite-bd39a.web.app/) com o intuito de demonstrar a atuação do algoritmo de preenchimento de polígonos para a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina.
 
 
@@ -17,7 +19,9 @@ Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 202
 
 Na interface é possível perceber o _canvas_ (área branca delimitada por bordas pretas). Neste canvas, é possível definir pontos clicando com o botão esquerdo do _mouse_. Cada ponto é definido como um vértice do seu polígono.
 
-<img align="center" src="./readmeImages/interface.png" alt="interface da aplicação" width="800" />
+<div align="center">
+  <img src="./readmeImages/interface.png" alt="interface da aplicação" width="800" />
+</div>
 
 É possível adicionar quantos vértices e arestas desejar, e no formato que imaginar. Assim, para fechar o polígono, basta apertar o botão direito do mouse, a tecla espaço ou a tecla enter. Logo que fechado, é executado o preenchimento do polígono.
 
