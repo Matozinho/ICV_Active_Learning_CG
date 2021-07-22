@@ -1,12 +1,23 @@
-# Preenchimento de Polígonos
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <img src="./readmeImages/LOGO_UNIOESTE.png" height="100px" alt="Logo da Unioeste" />
+  <img src="./readmeImages/LOGO_PET.png" height="50px" alt="Logo da Unioeste" />
+</div>
 
-Esta aplicação foi desenvolvida com o intuito de demonstrar a atuação do algoritmo de preenchimento de polígonos para a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina.
+<div align="center">
+
+# Preenchimento de Polígonos
+</div>
+
+
+Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 2020/2021, através do grupo [PETComp](https://petsite-bd39a.web.app/) com o intuito de demonstrar a atuação do algoritmo de preenchimento de polígonos para a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina.
+
+
 
 ## Como Utilizar
 
 Na interface é possível perceber o _canvas_ (área branca delimitada por bordas pretas). Neste canvas, é possível definir pontos clicando com o botão esquerdo do _mouse_. Cada ponto é definido como um vértice do seu polígono.
 
-![](./interface.png)
+<img align="center" src="./readmeImages/interface.png" alt="interface da aplicação" width="800" />
 
 É possível adicionar quantos vértices e arestas desejar, e no formato que imaginar. Assim, para fechar o polígono, basta apertar o botão direito do mouse, a tecla espaço ou a tecla enter. Logo que fechado, é executado o preenchimento do polígono.
 
@@ -15,7 +26,6 @@ Na região de troca de cores é possível escolher as cores das bordas do políg
 Quando desejar desenhar outro polígono, ou mesmo reiniciar o processo sem fechar um polígono, basta clicar no botão "Limpar".
 
 A aplicação **NÃO** é responsiva e se adapta a monitores de resolução superior a 1440 x 900.
-
 ## Especificações técnicas
 
 A aplicação foi desenvolvida utilizando a biblioteca [React](https://pt-br.reactjs.org/), a partir do [create react app](https://github.com/facebook/create-react-app), em ambiente linux (ubuntu 20.04). A biblioteca React permite a componentização de elementos da interface, além da utilização do [ES6](https://262.ecma-international.org/6.0/), para uma melhor organização de código. Para facilitar a interação com o _canvas_, utilizou-se a biblioteca [P5.js](https://p5js.org/).
