@@ -145,8 +145,8 @@ Assim, sabendo os dados que precisamos armazenar podemos criar um objeto _polygo
 ```js
 const polygon = {
   vertices: [],
-  minY: Number.INFINITE_POSITIVE,
-  maxY: Number.INFINITE_NEGATIVE,
+  minY: Number.POSITIVE_INFINITY,
+  maxY: Number.NEGATIVE_INFINITY,
   intersections: new Map(),
 };
 ```
@@ -204,13 +204,14 @@ Agora seu polígono pode ser completamente definido e fechado. Vale lembrar que 
 Logo após fecharmos o polígono devemos realizar três passos:
 
 1. Definir os pontos de interseção do polígono;
-2. Definir a menor e maior coordenada y;
-3. Preencher o polígono;
+2. Ordenar e garantir que os pixels encontrados estão dentro do polígono;
+3. Definir a menor e maior coordenada y;
+4. Preencher o polígono;
 
-### 1. Pontos de interseção do polígono
+### 1. Definindo os pontos de interseção do polígono
 
 Para definir as interseções devemos calcular os todos os pontos _x_ em uma determinada aresta AB. Esses pontos são obtidos através de um método incremental, onde pode-se somar ao _x_ anterior com 1 / _coeficiente_angular_, obtendo-se assim o próximo ponto.
-O valor 1 / _coeficiente_angular_ pode ser interpretado como a variação em _x_ para uma unidade variada em _y_. O inverso do coeficinete angular pode ser definido por (ponto2.x - ponto1.x) / (ponto2.y - ponto1.y).
+O valor 1 / _coeficiente_angular_ pode ser interpretado como a variação em _x_ para uma unidade variada em _y_.
 
 ```js
 function defineIntersections() {
@@ -223,3 +224,138 @@ function defineIntersections() {
 
 A função _defineIntersections_ percorre todos os vértices em sequência, chamando a função _defineEdge_. Nessa função faremos as operações necessárias para obter os valores da interseção nesta aresta.
 
+```js
+function defineEdge(vertice1, vertice2) {
+  if (vertice1.y != vertice2.y) {
+    const intersections = polygon.intersections;
+    let initialY, endY;
+    let currentX;
+
+    const variation = (vertice2.x - vertice1.x) / (vertice2.y - vertice1.y);
+
+    if (vertice1.y < vertice2.y) {
+      initialY = vertice1.y;
+      endY = vertice2.y;
+      currentX = vertice1.x;
+    } else {
+      initialY = vertice2.y;
+      endY = vertice1.y;
+      currentX = vertice2.x;
+    }
+
+    for (let currentY = initialY; currentY < endY; currentY++) {
+      if (!intersections.get(currentY)) intersections.set(currentY, [currentX]);
+      else intersections.get(currentY).push(currentX);
+      currentX += variation;
+    }
+  }
+}
+```
+
+Só é necessário descobrir os pontos de interseção de uma aresta se a mesma não for horizontal. Assim, precisamos definir o ponto _Y_ inicial para o laço de repetição, a variação em _X_ para cada _Y_ percorrido e o ponto _Y_ de parada do laço.
+
+A variação pode ser descoberta pelo inverso do coeficinete angular da reta, ou seja, por (ponto2.x - ponto1.x) / (ponto2.y - ponto1.y). Além disso, sempre percorremos a aresta do ponto com menor _Y_ para o ponto com maior _Y_. 
+
+Ao percorrer a aresta devemos apenas verificar se já exite uma chave armazenada com o _Y_ da iteração. Caso não exista, devemos criá-la e iniciar o vetor de pontos _X_. Caso já exista, basta adicionar o ponto ao final do vetor daquela chave.
+
+Após definir todos os pontos de interseção do polígono, você pode adicionar _console.log(polygon.intersections)_ ao final da função _defineIntersections_, ir até seu navegador e abrir as ferramentas de desenvolvedor (Figura X). Ao desenhar um polígono, ele mostrará todas as chaves com seus respectivos vetores com os _X_ que são interseções daquele determinado ponto _Y_ (Figura X);
+
+![developerMode](./images/modo%20desenvolvedor.png)
+![intersectionsLog](./images/intersectionsLog.png)
+
+### 2. Ordenar e garantir que os pixels encontrados estão dentro do polígono;
+
+Como você pode ter percebido no log que fizemos, alguns vetores estão desordenados, entertanto, para preenchermos o polígono eles devem estar preenchidos. Para isso, adicionamos o seguinte código ao final da função _defineIntersections_:
+
+```js
+polygon.intersections.forEach((xArray) => xArray.sort((a, b) => a - b));
+```
+
+Esse código percorre todas as listas e ordena os vetores dessas do menor para o maior valor.
+
+Ao calcularmos os pontos de interseção, eles estão exatamente encima da aresta, entretanto, devemos preencher apenas o interior do polígono. Assim, para garantirmos que todos os pontos estão dentro do polígono, devemos aproximar as coordenadas _X_ à um valor inteiro. 
+Entretanto, não podemos aproximar os os pixels das arestas que estão à esqueda para baixo, pois assim não estariam mais dentro do polígono. O mesmo se aplica às coordenadas das arestas à direita do polígono. Caso essas sejam aproximadas para cima, elas estarão fora do polígono definido.
+
+Felizmente, sabendo que cada lista da nossa variável intersections está ordenada do menor para o maior valor, sabemos que toda posição de índice par (0, 2, 4, ..., 2n) é a pertencente à uma aresta da esquerda do polígono, ou seja, deve ser arredondada para cima. Análogamente, sabemos que todas as posições ímpares (1, 3, 5, ..., 2n-1) é pertencente à uma aresta à direita do polígono, ou seja, devem ser arredondadas para baixo.
+
+Sabendo disso, podemos utilizar a mesma função _forEach_ que utilizamos para ordenar o vetor, para fazer os arredondamentos, evitando assim ter que percorrer todas listas novamente:
+
+```js
+polygon.intersections.forEach((xArray) => {
+  xArray.sort((a, b) => a - b);
+
+  const arraySize = xArray.length;
+
+  for (let i = 0; i < arraySize; i++) {
+    if (i % 2 === 0) xArray[i] = Math.ceil(xArray[i]);
+    else xArray[i] = Math.floor(xArray[i]);
+  }
+});
+```
+
+### 3. Definir a menor e maior coordenada y;
+
+É necessário obter esses pontos para utlizá-los posteriormente no preenchimento. A menor e maior coordenada _Y_ está em um dos vértices do polígono, portanto, basta percorrer o vetor de vértices e verificar qual dos pontos possui o maior e menor _Y_, como segue o código que pode ser adicinonado ao final da função _defineIntersections_:
+
+```js
+polygon.vertices.forEach((vertice) => {
+    if (polygon.maxY < vertice.y) polygon.maxY = vertice.y;
+    if (polygon.minY > vertice.y) polygon.minY = vertice.y;
+  });
+```
+
+Como ao criarmos o objeto polígono as variáveis minY e maxY receberam os valores **POSITIVE_INFINITY** e **NEGATIVE_INFINITY**, respectivamente, na primeira iteração ambas as variáveis recebem o mesmo valor, e com o decorrer das iterações, os valores são encontrados.
+
+### 4. Preencher o polígono
+
+Chegamos aos finalmentes, entretanto, antes de implementarmos o preenchimento, devemos também _resetar_ as variáveis _intersections_, _minY_ e _maxY_ do polígono, para que essas não interfiram em outros polígonos após a limpeza do canvas. Para isso, adicione o seguinte código na função _clearCanvas_:
+
+```js
+function clearCanvas() {
+  polygon.vertices = [];
+  polygon.intersections = new Map();
+  polygon.minY = Number.POSITIVE_INFINITY;
+  polygon.maxY = Number.NEGATIVE_INFINITY;
+
+  clear();
+}
+```
+
+Agora com tudo certo e definido podemos efeitvamente preencher o polígono!
+
+O preenchimento do polígono é feito de cima para baixo (do menor para o maior _Y_), onde para cada _Y_, utilizamos o vetor de coordenadas _X_ - armazenados em _intersections_. Vamos pegar as coordenadas _X_ duas a duas nesse vetor, pois essas formam o intervalo de preenchimento entre duas arestas, e preencher com pontos, conforme segue:
+
+```js
+function fillPolygon() {
+  const initialY = polygon.minY;
+  const endY = polygon.maxY;
+  const intersections = polygon.intersections;
+
+  for (let currentY = initialY; currentY < endY; currentY++) {
+    const currentPoint = intersections.get(currentY);
+    let k = 0;
+
+    do {
+      let firstX = currentPoint[k];
+      let endX = currentPoint[k + 1];
+
+      for (let currentX = firstX; currentX < endX; currentX++)
+        point(currentX, currentY);
+
+      k += 2;
+    } while (currentPoint[k]);
+  }
+}
+```
+Antes de finalizarmos, você deve chamar a função _fillPolygon_ ao final da função _defineIntersections_. Ao fazer isso, os polígonos de qualquer complexidade ou quantidade de lados será preenchido em sua página html:
+
+![filledPolygon](./images/filledPolygon.png)
+![filledPolygon](./images/hardPolygonFilled.png)
+
+## Conclusão
+
+Neste artigo foram passados os princípios do algoritmo scanLine e um modo de implementá-lo com javascript. Sabendo esses conceitos, é possível implementá-lo em qualque linguagem com suporte para ferramentas visuais e de desenho.
+Entretanto, como o foco do artigo foi demonstrar os passos para o polígono, alguns erros não foram tratados, como por exemplo fechar o polígono com menos de três vértices. Ainda como sugestão de melhoria, você pode implementar esses algoritmos com orientação a objeto e torná-los método de uma classe _Polygon_. As possibilidades são inúmeras.
+
+O código fonte para a ãplicação pode ser encontrado no [github]().
+Este artigo é parte do projeto de iniciação científica da Universidade Estadual do Oeste do Paraná (Unioeste), sob financiamento do MEC através do [PETComp](https://petsite-bd39a.web.app/) e orientação do docente Adair Santa Catarina.
