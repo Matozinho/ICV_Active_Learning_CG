@@ -60,7 +60,7 @@ export default function FillPolygonSketch({
     if (verticesLength) {
       const lastVertice = polygon.vertices[verticesLength - 1];
 
-      polygon.scanLine(currentVertice, lastVertice); // Define all the X points in the edge to fill polygon after
+      polygon.defineEdgeIntersections(currentVertice, lastVertice); // Define all the X points in the edge to fill polygon after
       p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y);
     }
   };

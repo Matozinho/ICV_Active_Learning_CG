@@ -1,4 +1,3 @@
-import { quickSort } from "../utils/quickSort";
 import p5Types from "p5";
 
 interface PointType {
@@ -17,7 +16,7 @@ interface PolygonType {
   reset: () => void;
   defineMaxAndMin: () => void;
   close: (p5: p5Types) => void;
-  scanLine: (p1: PointType, p2: PointType) => void;
+  defineEdgeIntersections: (p1: PointType, p2: PointType) => void;
   fillPolygon: (p5: p5Types) => void;
   setColors: (
     p5: p5Types,
@@ -46,20 +45,16 @@ export const polygon: PolygonType = {
   reset() {
     this.isOpen = true;
     this.vertices = [];
+    this.maxY = Number.NEGATIVE_INFINITY;
+    this.minY = Number.POSITIVE_INFINITY;
     this.intersections = new Map();
   },
 
   defineMaxAndMin() {
-    let xCoordinantes: number[] = [];
-    let yCoordinantes: number[] = [];
-
-    this.vertices.forEach((currentVertice) => {
-      xCoordinantes.push(currentVertice.x);
-      yCoordinantes.push(currentVertice.y);
+    this.vertices.forEach((vertice) => {
+      if (polygon.maxY < vertice.y) polygon.maxY = vertice.y;
+      if (polygon.minY > vertice.y) polygon.minY = vertice.y;
     });
-
-    this.maxY = Math.max(...yCoordinantes);
-    this.minY = Math.min(...yCoordinantes);
   },
 
   close(p5: p5Types) {
@@ -67,19 +62,27 @@ export const polygon: PolygonType = {
     const lastVertice = this.vertices[this.vertices.length - 1];
 
     this.isOpen = false;
-    this.scanLine(firstVertice, lastVertice);
+    this.defineEdgeIntersections(firstVertice, lastVertice);
     this.defineMaxAndMin();
     
     // Order array with X coordinantes of each Y point (key of the map)
-    this.intersections.forEach((node) =>
-      quickSort(node, 0, node.length - 1),
-    );
+    // make points inside polygon
+    this.intersections.forEach((xArray) => {
+      xArray.sort((a, b) => a - b);
+  
+      const arraySize = xArray.length;
+  
+      for (let i = 0; i < arraySize; i++) {
+        if (i % 2 === 0) xArray[i] = Math.ceil(xArray[i]);
+        else xArray[i] = Math.floor(xArray[i]);
+      }
+    });
 
     this.fillPolygon(p5);
   },
 
   // Defines all the X point in a edge
-  scanLine(p1: PointType, p2: PointType) {
+  defineEdgeIntersections(p1: PointType, p2: PointType) {
     const intersections = this.intersections;
     let initialY: number, endY: number;
     let currentX: number;
