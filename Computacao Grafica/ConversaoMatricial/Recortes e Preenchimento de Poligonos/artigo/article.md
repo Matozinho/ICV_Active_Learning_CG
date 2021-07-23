@@ -1,18 +1,25 @@
 # Preenchimento de Polígonos
 
-Por definição, um polígono é um conjunto ordenado de três ou mais vértices, dispostos em um plano de tal modo que a junção de seus vértices formam uma figura de n lados, tal como mostrado na figura abaixo:
+Por definição, um polígono é uma ifura simple, plana e fechada, formada por um conjunto ordenado de três ou mais vértices, dispostos em um plano de tal modo que a junção de seus vértices formam segmentos de reta que não se cruzam, tal como mostrado na figura abaixo:
 
-TODO: Figura de exemplos de polígonos
+<div style="background-color: white; justify-content: space-around;  display: flex">
+  <img src="./images/polygon1.png" height="300">
+  <img src="./images/polygon2.png" height="300">
+</div>
 
 Um polígono pode ser preenchido, ou não e há diferentes algoritmos para preencher um polígono. Neste artigo implementaremos o algoritmo Scanline.
 
 ## Algoritmo ScanLine
 
-A ideia básica desse algoritmo é mapear todos os pares de pontos no eixo das abcissas, pertencentes às arestas, para um determinado ponto no eixo das ordenadas. Sabendo esses pontos, podemos preencher o espaço entre eles.
+O algoritmo foi proposto por Wylie, Romney, Evans e Erdahl no ano de 1967 ([referenciar](./ScanLine.pdf), [referenciar](https://webpages.uncc.edu/krs/courses/4120-5120/lectures/hs2.pdf)). A ideia básica desse algoritmo é mapear todos os pontos de interseção, no eixo das abcissas, para um determinado ponto no eixo das ordenadas. Esses pontos são parte das arestas do polígono. Assim, sabendo esses pontos, podemos preencher o espaço entre eles.
 
 Utilizando o polígono da figura 2 como exemplo podemos pensar no seguinte:
 
-Se no ponto de ordenada 12 traçarmos uma reta que cruza todo o polígono, podemos ver que há quatro arestas que interceptam essa reta, ou seja, para o ponto com Y = 12 temos 4 pontos diferentes em X que marcam os limites do polígono. Se pudermos definir quais são esses pontos, podemos então preencher o espaço que há entre eles (de dois em dois do menor para o maior).
+![ImageExemple](./images/scanLineExemple.png)
+
+imagem disponível [aqui](http://wiki.icmc.usp.br/images/7/7e/Scanline.pdf)
+
+Se no ponto de ordenada 7 traçarmos uma reta que cruza todo o polígono, podemos ver que há quatro arestas que interceptam essa reta, ou seja, para o ponto com Y = 7 temos 4 pontos diferentes em X que marcam os limites do polígono. Se pudermos definir quais são esses pontos, podemos então preencher o espaço que há entre eles (de dois em dois do menor para o maior).
 
 Durante a implementação, as exceções serão explicadas.
 
@@ -357,5 +364,5 @@ Antes de finalizarmos, você deve chamar a função _fillPolygon_ ao final da fu
 Neste artigo foram passados os princípios do algoritmo scanLine e um modo de implementá-lo com javascript. Sabendo esses conceitos, é possível implementá-lo em qualque linguagem com suporte para ferramentas visuais e de desenho.
 Entretanto, como o foco do artigo foi demonstrar os passos para o polígono, alguns erros não foram tratados, como por exemplo fechar o polígono com menos de três vértices. Ainda como sugestão de melhoria, você pode implementar esses algoritmos com orientação a objeto e torná-los método de uma classe _Polygon_. As possibilidades são inúmeras.
 
-O código fonte para a ãplicação pode ser encontrado no [github]().
+O código fonte para a ãplicação pode ser encontrado no [github](https://github.com/Matozinho/ICVs/tree/master/Computacao%20Grafica/ConversaoMatricial/Recortes%20e%20Preenchimento%20de%20Poligonos/artigo/application).
 Este artigo é parte do projeto de iniciação científica da Universidade Estadual do Oeste do Paraná (Unioeste), sob financiamento do MEC através do [PETComp](https://petsite-bd39a.web.app/) e orientação do docente Adair Santa Catarina.
