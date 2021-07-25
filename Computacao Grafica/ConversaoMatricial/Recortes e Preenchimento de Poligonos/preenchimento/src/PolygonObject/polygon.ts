@@ -58,12 +58,15 @@ export const polygon: PolygonType = {
   },
 
   close(p5: p5Types) {
-    const firstVertice = this.vertices[0];
-    const lastVertice = this.vertices[this.vertices.length - 1];
-
+    const verticesSize = this.vertices.length;
     this.isOpen = false;
-    this.defineEdgeIntersections(firstVertice, lastVertice);
     this.defineMaxAndMin();
+
+    for (let currentY = this.minY; currentY < this.maxY; currentY++)
+      this.intersections.set(currentY, []);
+
+    for (let i = 0; i < verticesSize; i++)
+      this.defineEdgeIntersections(this.vertices[i], this.vertices[(i + 1) % verticesSize]);
     
     // Order array with X coordinantes of each Y point (key of the map)
     // make points inside polygon
@@ -100,8 +103,7 @@ export const polygon: PolygonType = {
       }
 
       for (let currentY = initialY; currentY < endY; currentY++) {
-        if (!intersections.get(currentY)) intersections.set(currentY, [currentX]);
-        else intersections.get(currentY)?.push(currentX);
+        intersections.get(currentY)?.push(currentX);
         currentX += deltaX;
       }
     }

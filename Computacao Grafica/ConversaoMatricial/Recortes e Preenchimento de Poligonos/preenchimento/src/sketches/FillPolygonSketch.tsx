@@ -59,8 +59,6 @@ export default function FillPolygonSketch({
     // Verify if has more then 1 vertice to draw the edge
     if (verticesLength) {
       const lastVertice = polygon.vertices[verticesLength - 1];
-
-      polygon.defineEdgeIntersections(currentVertice, lastVertice); // Define all the X points in the edge to fill polygon after
       p5.line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y);
     }
   };
