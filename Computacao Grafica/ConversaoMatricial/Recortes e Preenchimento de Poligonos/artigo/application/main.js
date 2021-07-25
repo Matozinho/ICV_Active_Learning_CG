@@ -26,8 +26,10 @@ function setVertice(currentVertice) {
 
   const lastIndex = polygon.vertices.length - 1;
 
+  // Desenha o vértice
   circle(currentVertice.x, currentVertice.y, 2);
 
+  // Desenha as arestas
   if (lastIndex > 0) {
     const lastVertice = polygon.vertices[lastIndex - 1];
     line(lastVertice.x, lastVertice.y, currentVertice.x, currentVertice.y);
@@ -36,6 +38,16 @@ function setVertice(currentVertice) {
 
 function defineIntersections() {
   const verticesSize = polygon.vertices.length;
+
+  // Define y máximo e mínimo
+  polygon.vertices.forEach((vertice) => {
+    if (polygon.maxY < vertice.y) polygon.maxY = vertice.y;
+    if (polygon.minY > vertice.y) polygon.minY = vertice.y;
+  });
+
+  // Cria todas as posições dentro do Map
+  for (let i = polygon.minY; i < polygon.maxY; i++)
+    polygon.intersections.set(i, []);
 
   for (let i = 0; i < verticesSize; i++)
     defineEdge(polygon.vertices[i], polygon.vertices[(i + 1) % verticesSize]);
@@ -49,11 +61,6 @@ function defineIntersections() {
       if (i % 2 === 0) xArray[i] = Math.ceil(xArray[i]);
       else xArray[i] = Math.floor(xArray[i]);
     }
-  });
-
-  polygon.vertices.forEach((vertice) => {
-    if (polygon.maxY < vertice.y) polygon.maxY = vertice.y;
-    if (polygon.minY > vertice.y) polygon.minY = vertice.y;
   });
 
   fillPolygon();
@@ -78,8 +85,7 @@ function defineEdge(vertice1, vertice2) {
     }
 
     for (let currentY = initialY; currentY < endY; currentY++) {
-      if (!intersections.get(currentY)) intersections.set(currentY, [currentX]);
-      else intersections.get(currentY).push(currentX);
+      intersections.get(currentY).push(currentX);
       currentX += variation;
     }
   }
