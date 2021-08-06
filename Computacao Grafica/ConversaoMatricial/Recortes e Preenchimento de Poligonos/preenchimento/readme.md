@@ -11,21 +11,21 @@
 
 </div>
   
-Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 2020/2021, através do grupo [PETComp](https://petsite-bd39a.web.app/) com o intuito de demonstrar a atuação do algoritmo de preenchimento de polígonos para a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina.
+Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 2020/2021, através do grupo [PETComp](https://petsite-bd39a.web.app/), sob financiamento do MEC, com o intuito de demonstrar o algoritmo de preenchimento de polígonos a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina.
 
 
 
 ## Como Utilizar
 
-Na interface é possível perceber o _canvas_ (área branca delimitada por bordas pretas). Neste canvas, é possível definir pontos clicando com o botão esquerdo do _mouse_. Cada ponto é definido como um vértice do seu polígono.
+Na interface é possível definir pontos clicando com o botão esquerdo do _mouse_ dentro da área delimitada pela borda preta. Cada ponto é definido como um vértice.
 
 <div align="center">
   <img src="./readmeImages/interface.png" alt="interface da aplicação" width="800" />
 </div>
 
-É possível adicionar quantos vértices e arestas desejar, e no formato que imaginar. Assim, para fechar o polígono, basta apertar o botão direito do mouse, a tecla espaço ou a tecla enter. Logo que fechado, é executado o preenchimento do polígono.
+Com o botão direito do mouse, a tecla espaço ou a tecla enter é possível fechar o polígono. Logo que fechado, é executado o algoritmo de preenchimento.
 
-Na região de troca de cores é possível escolher as cores das bordas do polígono (vértices e arestas), e também a cor do preenchimento do polígono. Toda vez que uma alteração for feita nas cores é necessário clicar no botão "Aplicar". Assim, as novas cores serão adicionadas ao polígono.
+Na região de troca de cores é possível escolher as cores das bordas do polígono bem como a cor do preenchimento. Toda vez que uma alteração for feita nas cores é necessário clicar no botão "Aplicar".
 
 Quando desejar desenhar outro polígono, ou mesmo reiniciar o processo sem fechar um polígono, basta clicar no botão "Limpar".
 
