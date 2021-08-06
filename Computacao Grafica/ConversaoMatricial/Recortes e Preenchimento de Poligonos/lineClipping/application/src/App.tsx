@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Canvas } from "./components/Canvas";
+import { GithubCorner } from "./components/GithubCorner";
+import { OptionsContainer } from "./components/OptionsContainer";
 
-function App() {
+import './styles/home.css';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="homeContainer">
+      <h1>Recorte de Linhas</h1>
+      <GithubCorner />
+      <main>
+        <OptionsContainer />
+        <Canvas />
+      </main>
     </div>
   );
 }
-
-export default App;

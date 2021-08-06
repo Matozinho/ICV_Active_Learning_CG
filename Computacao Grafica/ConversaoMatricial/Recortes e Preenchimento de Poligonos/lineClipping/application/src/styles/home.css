@@ -1,0 +1,28 @@
+.homeContainer {
+  max-width: 1400px;
+  height: 100vh;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-rows: 1fr 7fr;
+
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.homeContainer h1 {
+  grid-row: 1;
+
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+.homeContainer main {
+  grid-row: 2;
+
+  display: flex;
+  width: 100%;
+
+  padding: 1rem;
+}
