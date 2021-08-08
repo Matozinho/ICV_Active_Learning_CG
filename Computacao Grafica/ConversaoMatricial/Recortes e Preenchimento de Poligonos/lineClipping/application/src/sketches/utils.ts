@@ -1,4 +1,5 @@
 import { Line } from '../classes/line';
+import p5Types from 'p5';
 
 interface PointType {
   x: number;
@@ -48,11 +49,9 @@ export const setCurrentLine = (currentLine: LineType, currentVertice: PointType,
   }
 }
 
-export const addExecutionTime = (startTime: number, finalTime: number) => {
-  const seconds = `${Math.trunc((finalTime - startTime) / 1000)}`;
-  const miliSeconds = `${Math.trunc((finalTime - startTime)%1000)}`; 
-  
-  const text = `${seconds.padStart(2, '0')}:${miliSeconds.padStart(3, '0')}`
-
-  document.getElementById('executionTime')!.innerHTML = text; 
+export const drawMinRect = (p5: p5Types, initialPoint: PointType = { x: 225, y: 125 }, width: number = 450, height: number = 250) => {
+  p5.clear();
+  p5.strokeWeight(1);
+  p5.rect(initialPoint.x, initialPoint.y, width, height);
+  p5.strokeWeight(2);
 }

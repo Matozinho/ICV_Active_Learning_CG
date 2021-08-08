@@ -4,8 +4,8 @@ import p5Types from 'p5';
 
 import { DrawContext } from "../contexts/DrawContextProvider";
 
-import { resetCurrentLine, setCurrentLine } from './utils';
-import { lineClipping } from './lineClipping';
+import { drawMinRect, resetCurrentLine, setCurrentLine } from './utils';
+import { lineClipping } from './lineClipping/index';
 
 interface FillPolygonSketchType {
   canvasParentRef: string;
@@ -63,20 +63,13 @@ export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: Fill
       setVertice(p5, { x: Math.round(p5.mouseX), y: Math.round(p5.mouseY) });
     });
 
-    p5.rect(minRectInit.x, minRectInit.y, canvasWidth / 2, canvasHeight / 2);
-
-    p5.strokeWeight(2);
+    drawMinRect(p5, minRectInit, canvasWidth / 2, canvasHeight / 2);
   }
 
   const clean = (p5: p5Types) => {
     lines = [];
 
-    p5.clear();
-    p5.strokeWeight(1);
-    const xRectInit = (canvasWidth / 2) - ((canvasWidth / 2) * 0.5);
-    const yRectInit = (canvasHeight / 2) - ((canvasHeight / 2) * 0.5);
-    p5.rect(xRectInit, yRectInit, 450, 250);
-    p5.strokeWeight(2);
+    drawMinRect(p5, minRectInit, canvasWidth / 2, canvasHeight / 2);
   }
 
   return <Sketch setup={setup} />
