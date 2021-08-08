@@ -1,11 +1,11 @@
-import { LineClipping } from "../../sketches/LineClipping"
+import { P5Interface } from "../../sketches/P5Interface"
 
 import './styles.css';
 
 export const Canvas = () => {
   return (
     <div id="canvas">
-      <LineClipping
+      <P5Interface
         canvasParentRef="canvas"
         canvasWidth={900}
         canvasHeight={500}

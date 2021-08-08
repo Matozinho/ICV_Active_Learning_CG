@@ -2,6 +2,8 @@ import { Canvas } from "./components/Canvas";
 import { GithubCorner } from "./components/GithubCorner";
 import { OptionsContainer } from "./components/OptionsContainer";
 
+import { DrawContextProvider } from "./contexts/DrawContextProvider";
+
 import './styles/home.css';
 
 export default function App() {
@@ -10,8 +12,10 @@ export default function App() {
       <h1>Recorte de Linhas</h1>
       <GithubCorner />
       <main>
-        <OptionsContainer />
-        <Canvas />
+        <DrawContextProvider>
+          <OptionsContainer />
+          <Canvas />
+        </DrawContextProvider>
       </main>
     </div>
   );
