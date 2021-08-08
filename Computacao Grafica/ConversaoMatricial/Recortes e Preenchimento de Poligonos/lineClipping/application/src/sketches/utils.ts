@@ -11,20 +11,31 @@ interface LineType {
   isLastVertice: boolean;
 }
 
+interface LinePointType {
+  x: number;
+  y: number;
+  clippingCode: number;
+}
+
 interface ContextLineType {
-  initialPoint: PointType;
-  endPoint: PointType;
+  initialPoint: LinePointType;
+  endPoint: LinePointType;
+}
+
+interface RectType {
+  minPoint: PointType;
+  maxPoint: PointType;
 }
 
 export const resetCurrentLine = (currentLine: LineType) => {
-  const reseterPoint = { x: -1, y: -1 };
+  const reseterPoint = { x: -1, y: -1, clippingCode: -1 };
 
   currentLine.isLastVertice = false;
   currentLine.initialPoint = reseterPoint;
   currentLine.endPoint = reseterPoint;
 }
 
-export const setCurrentLine = (currentLine: LineType, currentVertice: PointType, lines: ContextLineType[]) => {
+export const setCurrentLine = (currentLine: LineType, currentVertice: PointType, lines: ContextLineType[], rect: RectType) => {
   if (currentLine.initialPoint.x === -1)
     currentLine.initialPoint = currentVertice;
   else {
@@ -33,7 +44,7 @@ export const setCurrentLine = (currentLine: LineType, currentVertice: PointType,
   }
 
   if (currentLine.isLastVertice) {
-    lines.push(new Line(currentLine.initialPoint, currentLine.endPoint))
+    lines.push(new Line(currentLine.initialPoint, currentLine.endPoint, rect));
   }
 }
 

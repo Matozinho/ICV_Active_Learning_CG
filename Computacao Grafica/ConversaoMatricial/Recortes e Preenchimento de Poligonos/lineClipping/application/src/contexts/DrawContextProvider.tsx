@@ -8,14 +8,15 @@ interface DrawContextType {
   lines: LineType[];
 }
 
-interface PointType {
+interface LinePointType {
   x: number;
   y: number;
+  clippingCode: number;
 }
 
 interface LineType {
-  initialPoint: PointType;
-  endPoint: PointType;
+  initialPoint: LinePointType;
+  endPoint: LinePointType;
 }
 
 export const DrawContext = createContext({} as DrawContextType);

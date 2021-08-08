@@ -27,11 +27,13 @@ interface CurrentLineType {
 export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: FillPolygonSketchType) => {
   let { lines } = useContext(DrawContext);
   const currentLine: CurrentLineType = { initialPoint: { x: -1, y: -1 }, endPoint: { x: -1, y: -1 }, isLastVertice: false };
+  const minRectInit = { x: (canvasWidth * (1 / 4)), y: (canvasHeight * (1 / 4)) };
+  const minRectFinal = { x: (canvasWidth * (3 / 4)), y: (canvasHeight * (3 / 4)) };
 
   const setVertice = (p5: p5Types, currentVertice: PointType) => {
     p5.circle(currentVertice.x, currentVertice.y, 2);
 
-    setCurrentLine(currentLine, currentVertice, lines);
+    setCurrentLine(currentLine, currentVertice, lines, { minPoint: minRectInit, maxPoint: minRectFinal });
 
     if (currentLine.isLastVertice) {
       p5.line(
@@ -61,9 +63,7 @@ export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: Fill
       setVertice(p5, { x: Math.round(p5.mouseX), y: Math.round(p5.mouseY) });
     });
 
-    const xRectInit = (canvasWidth / 2) - ((canvasWidth / 2) * 0.5);
-    const yRectInit = (canvasHeight / 2) - ((canvasHeight / 2) * 0.5);
-    p5.rect(xRectInit, yRectInit, 450, 250);
+    p5.rect(minRectInit.x, minRectInit.y, canvasWidth / 2, canvasHeight / 2);
 
     p5.strokeWeight(2);
   }

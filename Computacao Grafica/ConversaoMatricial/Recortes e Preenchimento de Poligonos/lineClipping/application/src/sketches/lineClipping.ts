@@ -12,9 +12,10 @@ interface LineType {
 }
 
 export const lineClipping = (p5: p5Types, method: string, lines: LineType[]) => {
+  console.log(lines);
   const start = Date.now();
 
-  lines.forEach((line: any) => console.log(line));
+  // lines.forEach((line: any) => console.log(line));
 
   const end = Date.now();
   addExecutionTime(start, end);
