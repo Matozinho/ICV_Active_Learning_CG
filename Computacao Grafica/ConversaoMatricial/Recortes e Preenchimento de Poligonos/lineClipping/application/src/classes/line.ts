@@ -26,11 +26,6 @@ export class Line {
     this.defineClippingCode(this.endPoint, rect);
   }
 
-  public show() {
-    console.log('InitialPoint: ', this.initialPoint);
-    console.log('EndPoint: ', this.endPoint);
-  }
-
   private defineClippingCode(point: LinePointType, rect: RectType) {
     if (point.x < rect.minPoint.x)
       point.clippingCode += 1;
