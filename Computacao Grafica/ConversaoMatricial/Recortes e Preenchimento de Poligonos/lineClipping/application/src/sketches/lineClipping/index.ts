@@ -8,21 +8,39 @@ interface LinePointType {
   clippingCode: number;
 }
 
+interface PointType {
+  x: number;
+  y: number;
+}
+
 interface LineType {
   initialPoint: LinePointType;
   endPoint: LinePointType;
 }
 
-export const lineClipping = (p5: p5Types, method: string, lines: LineType[]) => {
+interface RectType {
+  minPoint: PointType;
+  maxPoint: PointType;
+}
+
+export const lineClipping = (p5: p5Types, method: string, lines: LineType[], rect: RectType) => {
   const start = Date.now();
 
-  if (method === 'cohenSutherland')
-    cohenSutherlandMethod(p5, lines);
+  if (method === 'cohenSutherland'){
+    const clippedLines = cohenSutherlandMethod(lines, rect);
+    clippedLines.forEach((line) => {
+      p5.stroke('red');
+      p5.line(line.initialPoint.x, line.initialPoint.y, line.endPoint.x, line.endPoint.y,)
+    })
+  }
   
-  else if (method === 'liangBarsky')
-    liangBarskyMethod(p5, lines);
+  else if (method === 'liangBarsky'){
+    alert('Funcionalidade em Desenvolvimento');
+    console.log(liangBarskyMethod(p5, lines));
+  }
 
   const end = Date.now();
+  p5.stroke('black');
   addExecutionTime(start, end);
 }
 
