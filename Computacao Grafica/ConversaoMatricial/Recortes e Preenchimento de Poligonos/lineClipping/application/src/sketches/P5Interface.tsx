@@ -26,7 +26,7 @@ interface CurrentLineType {
 
 export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: FillPolygonSketchType) => {
   let { lines } = useContext(DrawContext);
-  const currentLine: CurrentLineType = { initialPoint: { x: -1, y: -1 }, endPoint: { x: -1, y: -1 }, isLastVertice: false };
+  let currentLine: CurrentLineType = { initialPoint: { x: -1, y: -1 }, endPoint: { x: -1, y: -1 }, isLastVertice: false };
   const minRectInit = { x: (canvasWidth * (1 / 4)), y: (canvasHeight * (1 / 4)) };
   const minRectFinal = { x: (canvasWidth * (3 / 4)), y: (canvasHeight * (3 / 4)) };
 
@@ -55,7 +55,7 @@ export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: Fill
     select.html("<option value='cohenSutherland'>Cohen-Sutherland</option><option value='liangBarsky'>Liang & Barsky</option>");
     select.style('padding: 0.8rem 0.2rem; font-size: 1rem; border-radius: 8px; outline:none; cursor: pointer; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);');
 
-    executeClipping.mouseClicked(() => lineClipping(p5, select.value() as string, lines));
+    executeClipping.mouseClicked(() => lineClipping(p5, select.value() as string, lines, { minPoint: minRectInit, maxPoint: minRectFinal }));
 
     clearCanvasButton.mouseClicked(() => clean(p5));
 
@@ -68,6 +68,7 @@ export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: Fill
 
   const clean = (p5: p5Types) => {
     lines = [];
+    currentLine = { initialPoint: { x: -1, y: -1 }, endPoint: { x: -1, y: -1 }, isLastVertice: false };
 
     drawMinRect(p5, minRectInit, canvasWidth / 2, canvasHeight / 2);
   }
