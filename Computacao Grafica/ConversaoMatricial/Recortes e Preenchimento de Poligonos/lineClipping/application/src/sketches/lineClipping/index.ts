@@ -1,6 +1,6 @@
 import p5Types from 'p5';
 import { cohenSutherlandMethod } from './cohenSutherlandMethod';
-import { liangBarskyMethod } from './liangBarskyMethod';
+// import { liangBarskyMethod } from './liangBarskyMethod';
 
 interface LinePointType {
   x: number;
@@ -36,7 +36,6 @@ export const lineClipping = (p5: p5Types, method: string, lines: LineType[], rec
   
   else if (method === 'liangBarsky'){
     alert('Funcionalidade em Desenvolvimento');
-    console.log(liangBarskyMethod(p5, lines));
   }
 
   const end = Date.now();

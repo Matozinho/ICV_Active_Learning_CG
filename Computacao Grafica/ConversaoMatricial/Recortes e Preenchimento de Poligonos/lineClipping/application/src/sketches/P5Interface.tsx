@@ -4,7 +4,7 @@ import p5Types from 'p5';
 
 import { DrawContext } from "../contexts/DrawContextProvider";
 
-import { drawMinRect, resetCurrentLine, setCurrentLine } from './utils';
+import { drawMinRect, generateRandomLines, resetCurrentLine, setCurrentLine } from './utils';
 import { lineClipping } from './lineClipping/index';
 
 interface FillPolygonSketchType {
@@ -54,6 +54,10 @@ export const P5Interface = ({ canvasParentRef, canvasWidth, canvasHeight }: Fill
     const select = p5.createSelect().parent('optionsDropDown');
     select.html("<option value='cohenSutherland'>Cohen-Sutherland</option><option value='liangBarsky'>Liang & Barsky</option>");
     select.style('padding: 0.8rem 0.2rem; font-size: 1rem; border-radius: 8px; outline:none; cursor: pointer; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);');
+    const randomLinesInput = p5.createInput('Número de linhas', 'number').parent('randomLines');
+    const randonLinesButton = p5.createButton('Gerar').parent('randomLines');
+
+    randonLinesButton.mouseClicked(() => generateRandomLines(+randomLinesInput.value(), lines, canvasWidth, canvasHeight, { minPoint: minRectInit, maxPoint: minRectFinal }, p5));
 
     executeClipping.mouseClicked(() => lineClipping(p5, select.value() as string, lines, { minPoint: minRectInit, maxPoint: minRectFinal }));
 
