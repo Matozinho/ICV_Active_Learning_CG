@@ -1,10 +1,12 @@
-import './styles.css';;
+import "./styles.css";
 
 export const OptionsContainer = () => {
   return (
     <section className="optionsContainer">
       <header>
-        <label htmlFor="executionTime">Tempo de Execução</label>
+        <label htmlFor="executionTime">
+          Tempo de Execução <br /> [s]:[ms]
+        </label>
         <div id="executionTime"></div>
 
         <div id="optionsDropDown" />
@@ -14,7 +16,11 @@ export const OptionsContainer = () => {
         <div id="randomLines" />
       </header>
 
-      <footer id="controlButtons" />
-    </section >
-  )
-}
+      <footer id="controlButtons">
+        <div id="clippingButton" />
+        <div id="clearButton" />
+      </footer>
+    </section>
+  );
+};
+
