@@ -11,7 +11,7 @@
 
 </div>
   
-Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 2020/2021, através do grupo [PETComp](https://petsite-bd39a.web.app/), sob financiamento do MEC, com o intuito de demonstrar o algoritmo de preenchimento de polígonos a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina.
+Esta aplicação foi desenvolvida durante a Inciação Científica do ano de 2020/2021, através do grupo [PETComp](https://petsite-bd39a.web.app/), sob financiamento do MEC, com o intuito de demonstrar o algoritmo de preenchimento de polígonos a disciplina de Computação Gráfica da Universidade Estadual do Oeste do Paraná, sob orientação do docente Adair Santa Catarina. O artigo com a explicação da presente implementação pode ser econtrado na página do PETComp do [Medium](https://medium.com/petcomp/algoritmo-de-preenchimento-de-pol%C3%ADgonos-scan-line-2014fdf5d264?source=collection_home---4------0-----------------------).
 
 
 
