@@ -64,7 +64,7 @@ export const drawMinRect = (
   p5.strokeWeight(1);
   p5.rect(initialPoint.x, initialPoint.y, width, height);
   p5.strokeWeight(2);
-};
+}
 
 export const generateRandomLines = (
   linesNumber: number,
@@ -72,26 +72,30 @@ export const generateRandomLines = (
   canvasWidth: number,
   canvasHeight: number,
   rect: RectType,
-  p5: p5Types,
-) => {
+  p5: p5Types
+  ) => {
   let p1: PointType, p2: PointType;
-
+  
   while (linesNumber) {
-    p1 = {
+    p1 = { 
       x: Math.round(Math.random() * canvasWidth),
-      y: Math.round(Math.random() * canvasHeight),
+      y: Math.round(Math.random() * canvasHeight) 
     };
-
-    p2 = {
+    
+    p2 = { 
       x: Math.round(Math.random() * canvasWidth),
-      y: Math.round(Math.random() * canvasHeight),
+      y: Math.round(Math.random() * canvasHeight) 
     };
-
+    
     lines.push(new Line(p1, p2, rect));
-
-    p5.line(p1.x, p1.y, p2.x, p2.y);
+    
+    p5.line(
+      p1.x,
+      p1.y,
+      p2.x,
+      p2.y,
+    );
 
     linesNumber--;
   }
-};
-
+}

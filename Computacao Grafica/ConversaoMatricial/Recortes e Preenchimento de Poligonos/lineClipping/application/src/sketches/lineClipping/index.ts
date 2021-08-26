@@ -1,5 +1,5 @@
-import p5Types from "p5";
-import { cohenSutherlandMethod } from "./cohenSutherlandMethod";
+import p5Types from 'p5';
+import { cohenSutherlandMethod } from './cohenSutherlandMethod';
 // import { liangBarskyMethod } from './liangBarskyMethod';
 
 interface LinePointType {
