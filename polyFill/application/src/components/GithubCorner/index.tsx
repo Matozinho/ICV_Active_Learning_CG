@@ -4,7 +4,7 @@ export function GithubCorner() {
   return (
     <div className="container">
       <a
-        href="https://github.com/Matozinho/ICVs/tree/master/Computacao%20Grafica/ConversaoMatricial/Recortes%20e%20Preenchimento%20de%20Poligonos/preenchimento/application"
+        href="https://github.com/Matozinho/ICV_Active_Learning_CG/tree/main/polyFill/application"
         target="_blank"
         rel="noopener noreferrer"
       >
